@@ -50,6 +50,10 @@
 
     --error:#ba1a1a;
     --on-error:#ffffff;
+    --tertiary-fixed-dim:#ffba38;
+    --emerald:#146c43;
+    --on-emerald:#ffffff;
+    --gold-line:#fed65b;
 
     --serif:'Playfair Display', Georgia, 'Times New Roman', serif;
     --sans:'Montserrat', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
@@ -140,7 +144,7 @@
   .hamper:hover{box-shadow:0 20px 40px -12px rgba(60,20,20,.22);transform:translateY(-4px);}
   .hamper .pic{position:relative;width:100%;aspect-ratio:4/5;border-radius:var(--radius-xl);overflow:hidden;margin-bottom:24px;background:var(--surface-container-low);}
   .hbadge{position:absolute;top:16px;left:16px;padding:4px 12px;border-radius:999px;font-size:12px;font-weight:700;letter-spacing:.02em;}
-  .hbadge.best{background:var(--tertiary);color:var(--on-tertiary);}
+  .hbadge.best{background:var(--tertiary-fixed-dim);color:var(--on-tertiary-fixed);}
   .hbadge.eco{background:var(--secondary);color:var(--on-secondary);}
   .hamper h3{font-family:var(--sans);font-weight:600;font-size:20px;margin:0 0 8px;padding:0 8px;}
   .hamper .desc{font-size:14px;color:var(--on-surface-variant);margin:0 0 16px;padding:0 8px;
@@ -185,7 +189,7 @@
   .step p{font-size:14px;color:var(--on-surface-variant);margin:0;}
   .build-cta{align-self:flex-start;display:inline-flex;align-items:center;gap:8px;background:var(--primary);color:var(--on-primary);
     padding:16px 32px;border-radius:var(--radius-lg);font-family:var(--sans);font-weight:600;font-size:20px;
-    box-shadow:0 4px 16px rgba(143,0,13,.3);transition:.2s;}
+    box-shadow:0 4px 16px rgba(143,0,13,.3);border-bottom:2px solid var(--gold-line);transition:.2s;}
   .build-cta:hover{background:var(--primary-container);}
 
   /* ============ Footer ============ */
@@ -204,6 +208,19 @@
   .socials{display:flex;gap:16px;color:var(--on-surface-variant);}
   .socials button:hover{color:var(--primary);}
   .copyright{border-top:1px solid var(--outline-variant);text-align:center;padding:24px 0;font-size:14px;color:var(--on-surface-variant);}
+
+  /* ============ Spec components (DESIGN.md) ============ */
+  .stock-wrap{padding:0 8px;margin:0 0 14px;}
+  .stock{display:inline-flex;align-items:center;gap:6px;padding:4px 11px;border-radius:999px;
+    background:color-mix(in srgb,var(--emerald) 12%,var(--surface));color:var(--emerald);
+    border:1px solid color-mix(in srgb,var(--emerald) 32%,transparent);
+    font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;}
+  .stock .dot{width:6px;height:6px;border-radius:50%;background:var(--emerald);}
+  .feature-list{list-style:none;margin:20px 0 0;padding:0;display:flex;flex-direction:column;gap:12px;}
+  .feature-list li{display:flex;align-items:flex-start;gap:10px;font-size:15px;color:var(--on-surface-variant);}
+  .feature-list li svg{width:16px;height:16px;flex:none;margin-top:3px;color:var(--tertiary-container);}
+  .rakhi-ribbon{width:100%;max-width:var(--container);margin:8px auto 0;padding:0 var(--gutter);line-height:0;}
+  .rakhi-ribbon svg{display:block;width:100%;height:44px;}
 
   /* ============ Responsive ============ */
   @media (max-width:1023px){
@@ -300,6 +317,7 @@
         </div>
         <h3>The Royal Heritage Set</h3>
         <p class="desc">Two handcrafted Kundan rakhis, silver-plated pooja thali, premium saffron, and artisanal Kaju Katli.</p>
+        <div class="stock-wrap"><span class="stock"><span class="dot"></span>In Stock</span></div>
         <div class="foot">
           <span class="price">$85.00</span>
           <button class="addbtn" aria-label="Add to cart"><svg class="icon icon-sm" viewBox="0 0 24 24"><circle cx="9" cy="20" r="1.4"/><circle cx="17" cy="20" r="1.4"/><path d="M3 4h2l2 12h11"/><path d="M12 8v4M10 10h4"/></svg></button>
@@ -316,6 +334,7 @@
         </div>
         <h3>Sweet Nostalgia Collection</h3>
         <p class="desc">Classic rudraksha rakhi paired with gourmet pistachio dragées and a custom engraved photo frame.</p>
+        <div class="stock-wrap"><span class="stock"><span class="dot"></span>In Stock</span></div>
         <div class="foot">
           <span class="price">$65.00</span>
           <button class="addbtn" aria-label="Add to cart"><svg class="icon icon-sm" viewBox="0 0 24 24"><circle cx="9" cy="20" r="1.4"/><circle cx="17" cy="20" r="1.4"/><path d="M3 4h2l2 12h11"/><path d="M12 8v4M10 10h4"/></svg></button>
@@ -333,6 +352,7 @@
         </div>
         <h3>The Earthy Sibling Box</h3>
         <p class="desc">Plantable seed rakhi, organic honey, roasted almonds, and a miniature terracotta planter.</p>
+        <div class="stock-wrap"><span class="stock"><span class="dot"></span>In Stock</span></div>
         <div class="foot">
           <span class="price">$45.00</span>
           <button class="addbtn" aria-label="Add to cart"><svg class="icon icon-sm" viewBox="0 0 24 24"><circle cx="9" cy="20" r="1.4"/><circle cx="17" cy="20" r="1.4"/><path d="M3 4h2l2 12h11"/><path d="M12 8v4M10 10h4"/></svg></button>
@@ -340,6 +360,10 @@
       </article>
     </div>
   </section>
+
+  <div class="rakhi-ribbon" aria-hidden="true">
+    <svg viewBox="0 0 480 44" preserveAspectRatio="xMidYMid slice"><defs><pattern id="henna" width="48" height="44" patternUnits="userSpaceOnUse"><g fill="none" stroke="#735c00" stroke-width="1.3" opacity="0.34"><path d="M0 22h48"/><path d="M24 11l7 11-7 11-7-11z"/><circle cx="24" cy="22" r="2.1" fill="#735c00" stroke="none"/><circle cx="4" cy="22" r="1.5" fill="#735c00" stroke="none"/><circle cx="44" cy="22" r="1.5" fill="#735c00" stroke="none"/></g></pattern></defs><rect width="480" height="44" fill="url(#henna)"/></svg>
+  </div>
 
   <!-- Build Your Own Box -->
   <section class="build">
@@ -364,6 +388,11 @@
         <div class="intro">
           <h2>Build Your Own Box</h2>
           <p>Personalize every detail. Select a Rakhi, pair it with their favorite treats, and seal it with a heartfelt note.</p>
+          <ul class="feature-list">
+            <li><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="12" r="3"/><circle cx="12" cy="5" r="2.3"/><circle cx="12" cy="19" r="2.3"/><circle cx="5" cy="12" r="2.3"/><circle cx="19" cy="12" r="2.3"/><circle cx="7" cy="7" r="2"/><circle cx="17" cy="7" r="2"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/></svg>Handmade designer rakhi in your choice of thread</li>
+            <li><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="12" r="3"/><circle cx="12" cy="5" r="2.3"/><circle cx="12" cy="19" r="2.3"/><circle cx="5" cy="12" r="2.3"/><circle cx="19" cy="12" r="2.3"/><circle cx="7" cy="7" r="2"/><circle cx="17" cy="7" r="2"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/></svg>Gourmet sweets &amp; dry fruits, freshly boxed</li>
+            <li><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="12" r="3"/><circle cx="12" cy="5" r="2.3"/><circle cx="12" cy="19" r="2.3"/><circle cx="5" cy="12" r="2.3"/><circle cx="19" cy="12" r="2.3"/><circle cx="7" cy="7" r="2"/><circle cx="17" cy="7" r="2"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/></svg>A personalised note, gift-wrapped and shipped free</li>
+          </ul>
         </div>
         <div class="steps">
           <div class="step active">
