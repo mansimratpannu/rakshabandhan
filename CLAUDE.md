@@ -21,11 +21,16 @@ components. Honor it for every new page or change. Key points:
 
 ## Pages
 
-- `index.html` — Designer Rakhis (product listing + filters).
+- `index.html` — Home / landing (hero + live Rakhi countdown, shop-by-category,
+  trending rakhis, build-a-hamper band, trust tiles, newsletter).
+- `designer-rakhis.html` — Designer Rakhis (product listing + filters).
 - `gift-hampers.html` — Gift Hampers (hero, ready-to-ship grid, Build-Your-Own-Box).
 
-Header nav links these two pages; Home / Sweets & Treats / My Orders are `#`
-placeholders until built.
+Header nav links Home / Designer Rakhis / Gift Hampers across all three pages;
+Sweets & Treats / My Orders are `#` placeholders until built.
+
+The Home countdown targets Raksha Bandhan (currently `2026-08-28` in the inline
+script) — confirm/adjust the date there.
 
 ## Conventions
 
