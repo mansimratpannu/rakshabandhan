@@ -188,7 +188,85 @@
               </ul>
 
               {%- if paginate.pages > 1 -%}
-                {% render 'pagination', paginate: paginate, anchor: '' %}
+                <div class="collection-infinite-scroll-container text-center" style="margin-top: 4rem; display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%;">
+                  <button type="button" id="InfiniteScrollLoadMore" class="button button--secondary" data-next-url="{{ paginate.next.url }}" style="padding: 1.5rem 3rem; font-weight: 700; text-transform: uppercase; font-size: 1.3rem; letter-spacing: 0.1em; cursor: pointer; border-radius: 0 !important; background-color: #FBF0E7 !important; border: 1px solid #C9A227 !important; color: #241A14 !important;">
+                    LOAD MORE PRODUCTS
+                  </button>
+                  <div class="infinite-scroll-loading hidden" style="margin-top: 1.5rem;">
+                    {% render 'loading-spinner' %}
+                  </div>
+                </div>
+                
+                <script>
+                  document.addEventListener('DOMContentLoaded', function() {
+                    const loadMoreBtn = document.getElementById('InfiniteScrollLoadMore');
+                    const grid = document.getElementById('product-grid');
+                    const spinner = document.querySelector('.infinite-scroll-loading');
+                    
+                    if (loadMoreBtn && grid) {
+                      let loading = false;
+
+                      function loadNextPage() {
+                        if (loading) return;
+                        
+                        const nextUrl = loadMoreBtn.getAttribute('data-next-url');
+                        if (!nextUrl) return;
+
+                        loading = true;
+                        loadMoreBtn.classList.add('hidden');
+                        if (spinner) spinner.classList.remove('hidden');
+
+                        fetch(nextUrl)
+                          .then(res => res.text())
+                          .then(html => {
+                            const parser = new DOMParser();
+                            const doc = parser.parseFromString(html, 'text/html');
+                            
+                            const newItems = doc.querySelectorAll('#product-grid > li');
+                            newItems.forEach(item => {
+                              grid.appendChild(item);
+                            });
+
+                            const newLoadMore = doc.getElementById('InfiniteScrollLoadMore');
+                            if (newLoadMore && newLoadMore.getAttribute('data-next-url')) {
+                              const newUrl = newLoadMore.getAttribute('data-next-url');
+                              loadMoreBtn.setAttribute('data-next-url', newUrl);
+                              loadMoreBtn.classList.remove('hidden');
+                              if (spinner) spinner.classList.add('hidden');
+                              loading = false;
+                            } else {
+                              loadMoreBtn.remove();
+                              if (spinner) spinner.remove();
+                            }
+                          })
+                          .catch(err => {
+                            console.error(err);
+                            loadMoreBtn.innerText = 'ERROR LOADING PRODUCTS. TRY AGAIN.';
+                            loadMoreBtn.classList.remove('hidden');
+                            if (spinner) spinner.classList.add('hidden');
+                            loading = false;
+                          });
+                      }
+
+                      loadMoreBtn.addEventListener('click', loadNextPage);
+
+                      if ('IntersectionObserver' in window) {
+                        const observer = new IntersectionObserver((entries) => {
+                          if (entries[0].isIntersecting) {
+                            loadNextPage();
+                          }
+                        }, {
+                          rootMargin: '200px'
+                        });
+                        observer.observe(loadMoreBtn);
+                      }
+                    }
+                  });
+                </script>
+
+                <noscript>
+                  {% render 'pagination', paginate: paginate, anchor: '' %}
+                </noscript>
               {%- endif -%}
             </div>
           {%- endif -%}

@@ -26,6 +26,20 @@
         "quantity_selector": {
           "type": "quantity_selector"
         },
+        "gift_message": {
+          "type": "gift_message",
+          "settings": {
+            "label": "Gift Message (Free Scroll Card)",
+            "placeholder": "Write your message to your sibling here (max 200 chars)..."
+          }
+        },
+        "delivery_estimator": {
+          "type": "delivery_estimator",
+          "settings": {
+            "label": "Check Estimated Delivery Date",
+            "warning_cutoff_date": "2026-08-28"
+          }
+        },
         "buy_buttons": {
           "type": "buy_buttons",
           "settings": {
@@ -49,6 +63,8 @@
         "price",
         "variant_picker",
         "quantity_selector",
+        "gift_message",
+        "delivery_estimator",
         "buy_buttons",
         "description",
         "share"

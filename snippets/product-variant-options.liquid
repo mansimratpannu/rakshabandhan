@@ -62,6 +62,26 @@
   {% assign escaped_value = value | escape %}
 
   {%- if picker_type == 'swatch' -%}
+    {%- liquid
+      assign fallback_value = null
+      assign downcased_option_name = option.name | downcase
+      if downcased_option_name contains 'color' or downcased_option_name contains 'colour' or downcased_option_name contains 'thread'
+        assign lowercase_val = value | downcase
+        if lowercase_val contains 'kumkum' or lowercase_val contains 'red'
+          assign fallback_value = '#A3182B'
+        elsif lowercase_val contains 'marigold' or lowercase_val contains 'yellow' or lowercase_val contains 'gold'
+          assign fallback_value = '#EFA92C'
+        elsif lowercase_val contains 'shravana' or lowercase_val contains 'green'
+          assign fallback_value = '#12332C'
+        elsif lowercase_val contains 'sandal' or lowercase_val contains 'beige' or lowercase_val contains 'brown'
+          assign fallback_value = '#F3E3D3'
+        elsif lowercase_val contains 'ink' or lowercase_val contains 'black'
+          assign fallback_value = '#241A14'
+        else
+          assign fallback_value = lowercase_val
+        endif
+      endif
+    -%}
     {%- capture help_text -%}
       <span class="visually-hidden">{{ escaped_value }}</span>
       {{ label_unavailable }}
@@ -73,6 +93,7 @@
       name: input_name,
       value: escaped_value,
       swatch: value.swatch,
+      fallback_value: fallback_value,
       product_form_id: product_form_id,
       checked: value.selected,
       visually_disabled: option_disabled,

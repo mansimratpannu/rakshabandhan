@@ -491,6 +491,113 @@
                     block: block,
                     product_form_id: product_form_id
                   %}
+                {%- when 'gift_message' -%}
+                  <div class="product-gift-message-block" {{ block.shopify_attributes }} style="margin-bottom: 2rem;">
+                    <label class="form__label" for="GiftMessage-{{ section.id }}" style="font-weight: 700; color: #241A14; display: block; margin-bottom: 0.6rem; font-family: 'Marcellus', serif;">
+                      {{ block.settings.label | escape }}
+                    </label>
+                    <div class="field" style="margin-top: 0.5rem;">
+                      <textarea
+                        id="GiftMessage-{{ section.id }}"
+                        class="text-area field__input"
+                        name="properties[Gift Message]"
+                        form="{{ product_form_id }}"
+                        maxlength="200"
+                        placeholder="{{ block.settings.placeholder | escape }}"
+                        rows="3"
+                        style="resize: none; padding: 1.2rem; min-height: 80px; background: #FBF0E7; color: #241A14; border: 1px solid rgba(36,26,20,0.2);"
+                      ></textarea>
+                    </div>
+                    <div class="gift-message-counter" style="text-align: right; font-size: 1.1rem; color: rgba(36,26,20,0.6); margin-top: 4px; font-family: 'Space Mono', monospace;">
+                      <span id="GiftMessageCharCount-{{ section.id }}">0</span> / 200 characters
+                    </div>
+                  </div>
+                  <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                      const textarea = document.getElementById('GiftMessage-{{ section.id }}');
+                      const counter = document.getElementById('GiftMessageCharCount-{{ section.id }}');
+                      if (textarea && counter) {
+                        textarea.addEventListener('input', function() {
+                          counter.innerText = textarea.value.length;
+                        });
+                      }
+                    });
+                  </script>
+
+                {%- when 'delivery_estimator' -%}
+                  <div class="product-delivery-estimator-block" {{ block.shopify_attributes }} style="margin: 2rem 0; padding: 2rem; background-color: #F3E3D3; border: 1px solid rgba(201, 162, 39, 0.25);">
+                    <label class="form__label" for="DeliveryPincode-{{ section.id }}" style="font-weight: 700; color: #241A14; margin-bottom: 0.8rem; display: block; font-family: 'Marcellus', serif;">
+                      {{ block.settings.label | escape }}
+                    </label>
+                    <div class="delivery-estimator-input-wrapper" style="display: flex; gap: 1rem; width: 100%;">
+                      <input
+                        type="text"
+                        id="DeliveryPincode-{{ section.id }}"
+                        class="field__input"
+                        placeholder="Enter 6-digit Pincode"
+                        maxlength="6"
+                        pattern="[0-9]{6}"
+                        style="padding: 1rem; flex: 1; min-height: 4.5rem; background: #FBF0E7; color: #241A14; border: 1px solid rgba(36, 26, 20, 0.2);"
+                      >
+                      <button type="button" id="CheckDelivery-{{ section.id }}" class="button" style="margin: 0; min-height: 4.5rem; background-color: #EFA92C !important; color: #12332C !important; font-weight: 700; border: none; padding: 0 2rem; cursor: pointer;">Check</button>
+                    </div>
+                    <div id="DeliveryResult-{{ section.id }}" class="delivery-estimator-result" style="margin-top: 1.2rem; font-size: 1.3rem; font-weight: 700; font-family: 'Space Mono', monospace;"></div>
+                  </div>
+                  <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                      const checkBtn = document.getElementById('CheckDelivery-{{ section.id }}');
+                      const input = document.getElementById('DeliveryPincode-{{ section.id }}');
+                      const resultDiv = document.getElementById('DeliveryResult-{{ section.id }}');
+                      
+                      if (checkBtn && input && resultDiv) {
+                        checkBtn.addEventListener('click', function() {
+                          const pincode = input.value.trim();
+                          if (!/^\d{6}$/.test(pincode)) {
+                            resultDiv.style.color = '#A3182B'; // Kumkum red
+                            resultDiv.innerHTML = '⚠️ PLEASE ENTER A VALID 6-DIGIT INDIAN PINCODE.';
+                            return;
+                          }
+
+                          resultDiv.style.color = '#241A14';
+                          resultDiv.innerHTML = 'Calculating delivery...';
+
+                          const prefix = pincode.substring(0, 2);
+                          
+                          fetch('{{ "pincodes-transit.json" | asset_url }}')
+                            .then(res => res.json())
+                            .then(data => {
+                              const transitDays = data[prefix] || data['default'] || 5;
+                              
+                              // Delivery Calculation
+                              const today = new Date();
+                              const arrivalDate = new Date();
+                              arrivalDate.setDate(today.getDate() + transitDays);
+
+                              // Format Date
+                              const options = { day: 'numeric', month: 'short', year: 'numeric' };
+                              const dateStr = arrivalDate.toLocaleDateString('en-IN', options);
+
+                              // Festival Deadline
+                              const cutoffStr = '{{ block.settings.warning_cutoff_date | default: "2026-08-28" }}';
+                              const cutoffDate = new Date(cutoffStr + 'T23:59:59');
+
+                              if (arrivalDate > cutoffDate) {
+                                resultDiv.style.color = '#A3182B'; // Kumkum red
+                                resultDiv.innerHTML = `⚠️ ESTIMATED ARRIVAL: ${dateStr.toUpperCase()} (MISSES RAKSHA BANDHAN CUTOFF OF ${cutoffDate.toLocaleDateString('en-IN', {day: 'numeric', month: 'short'})})`;
+                              } else {
+                                resultDiv.style.color = '#12332C'; // Shravana green
+                                resultDiv.innerHTML = `✅ ESTIMATED ARRIVAL: ${dateStr.toUpperCase()} (ARRIVES BEFORE RAKSHA BANDHAN 28 AUG)`;
+                              }
+                            })
+                            .catch(err => {
+                              console.error(err);
+                              resultDiv.style.color = '#A3182B';
+                              resultDiv.innerHTML = '⚠️ ERROR CONNECTING TO ESTIMATOR SERVICE.';
+                            });
+                        });
+                      }
+                    });
+                  </script>
                 {%- when 'buy_buttons' -%}
                   {%- render 'buy-buttons',
                     block: block,
@@ -753,6 +860,143 @@
   </product-component>
 </product-info>
 
+<!-- Sticky Mobile Add to Cart Bar -->
+<div class="sticky-mobile-cart-bar color-scheme-1 hidden-desktop" id="StickyMobileCartBar-{{ section.id }}">
+  <div class="sticky-mobile-cart-container">
+    <div class="sticky-mobile-cart-info">
+      {%- if product.featured_media != blank -%}
+        <img src="{{ product.featured_media | image_url: width: 100 }}" alt="{{ product.title | escape }}" class="sticky-mobile-cart-img" width="40" height="40" loading="lazy">
+      {%- endif -%}
+      <div class="sticky-mobile-cart-text">
+        <h4 class="sticky-mobile-cart-title">{{ product.title | escape }}</h4>
+        <span class="sticky-mobile-cart-price">{{ product.selected_or_first_available_variant.price | money }}</span>
+      </div>
+    </div>
+    <button type="button" id="StickyMobileSubmit-{{ section.id }}" class="button button--primary sticky-mobile-cart-btn">
+      ADD TO CART
+    </button>
+  </div>
+</div>
+
+<style>
+  @media screen and (min-width: 750px) {
+    .hidden-desktop {
+      display: none !important;
+    }
+  }
+  .sticky-mobile-cart-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #FBF0E7; /* Sandal background */
+    border-top: 1px solid rgba(201, 162, 39, 0.3); /* Gold leaf top border */
+    padding: 1.2rem 1.6rem;
+    z-index: 100;
+    box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease;
+    transform: translateY(100%);
+    box-sizing: border-box;
+  }
+  .sticky-mobile-cart-bar.is-visible {
+    transform: translateY(0);
+  }
+  .sticky-mobile-cart-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1.5rem;
+  }
+  .sticky-mobile-cart-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    overflow: hidden;
+  }
+  .sticky-mobile-cart-img {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    border: 1px solid rgba(201,162,39,0.2);
+    border-radius: 0 !important;
+  }
+  .sticky-mobile-cart-text {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .sticky-mobile-cart-title {
+    font-size: 1.3rem;
+    margin: 0;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    color: #241A14;
+    font-family: 'Marcellus', serif;
+  }
+  .sticky-mobile-cart-price {
+    font-size: 1.2rem;
+    font-family: 'Space Mono', monospace;
+    color: #A3182B; /* Kumkum red */
+    font-weight: 700;
+  }
+  .sticky-mobile-cart-btn {
+    margin: 0;
+    flex-shrink: 0;
+    min-height: 4rem;
+    padding: 0 2rem;
+    font-size: 1.2rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    background-color: #EFA92C !important;
+    border-color: #EFA92C !important;
+    color: #12332C !important;
+    border-radius: 0 !important;
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const stickyBar = document.getElementById('StickyMobileCartBar-{{ section.id }}');
+    const submitBtn = document.getElementById('StickyMobileSubmit-{{ section.id }}');
+    const mainForm = document.getElementById('{{ product_form_id }}');
+    
+    if (stickyBar && submitBtn) {
+      // Toggle visibility based on scroll position
+      const mainSubmitBtn = mainForm ? mainForm.querySelector('[name="add"]') : null;
+      
+      window.addEventListener('scroll', function() {
+        if (window.innerWidth < 750) {
+          let triggerY = 400;
+          if (mainSubmitBtn) {
+            triggerY = mainSubmitBtn.getBoundingClientRect().bottom + window.scrollY;
+          }
+          
+          if (window.scrollY > triggerY) {
+            stickyBar.classList.add('is-visible');
+          } else {
+            stickyBar.classList.remove('is-visible');
+          }
+        } else {
+          stickyBar.classList.remove('is-visible');
+        }
+      });
+
+      // Submit action
+      submitBtn.addEventListener('click', function() {
+        if (mainForm) {
+          const actualBtn = mainForm.querySelector('[name="add"]');
+          if (actualBtn) {
+            actualBtn.click();
+          } else {
+            mainForm.submit();
+          }
+        }
+      });
+    }
+  });
+</script>
+
 {% schema %}
 {
   "name": "t:sections.main-product.name",
@@ -761,6 +1005,44 @@
   "blocks": [
     {
       "type": "@app"
+    },
+    {
+      "type": "gift_message",
+      "name": "Gift Message Card",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Block Label",
+          "default": "Gift Message (Free Scroll Card)"
+        },
+        {
+          "type": "text",
+          "id": "placeholder",
+          "label": "Placeholder Text",
+          "default": "Write your message to your sibling here (max 200 chars)..."
+        }
+      ]
+    },
+    {
+      "type": "delivery_estimator",
+      "name": "Delivery Estimator",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Block Label",
+          "default": "Check Estimated Delivery Date"
+        },
+        {
+          "type": "text",
+          "id": "warning_cutoff_date",
+          "label": "Festival Cutoff Date (YYYY-MM-DD)",
+          "default": "2026-08-28"
+        }
+      ]
     },
     {
       "type": "text",
