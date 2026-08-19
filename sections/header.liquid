@@ -205,7 +205,12 @@
             }}
           </div>
         {%- else -%}
-          <span class="h2">{{ shop.name }}</span>
+          <span class="logo-lockup">
+            <span class="logo-main">{{ shop.name }}</span>
+            {%- if section.settings.logo_sub_mark != blank -%}
+              <span class="logo-sub devanagari-accent">{{ section.settings.logo_sub_mark }}</span>
+            {%- endif -%}
+          </span>
         {%- endif -%}
       </a>
       {%- if request.page_type == 'index' -%}
@@ -248,7 +253,12 @@
             }}
           </div>
         {%- else -%}
-          <span class="h2">{{ shop.name }}</span>
+          <span class="logo-lockup">
+            <span class="logo-main">{{ shop.name }}</span>
+            {%- if section.settings.logo_sub_mark != blank -%}
+              <span class="logo-sub devanagari-accent">{{ section.settings.logo_sub_mark }}</span>
+            {%- endif -%}
+          </span>
         {%- endif -%}
       </a>
       {%- if request.page_type == 'index' -%}
@@ -505,6 +515,12 @@
   "max_blocks": 3,
   "settings": [
     {
+      "type": "text",
+      "id": "logo_sub_mark",
+      "label": "Devanagari Sub-mark Text",
+      "default": "श्री राखी"
+    },
+    {
       "type": "select",
       "id": "logo_position",
       "options": [
@@ -609,7 +625,7 @@
       "type": "color_scheme",
       "id": "color_scheme",
       "label": "t:sections.all.colors.label",
-      "default": "scheme-1"
+      "default": "scheme-3"
     },
     {
       "type": "color_scheme",

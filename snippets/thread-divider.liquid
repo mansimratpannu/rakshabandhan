@@ -1,0 +1,155 @@
+{% comment %}
+  Renders the twisted red-and-gold cord signature element.
+  Accepts:
+  - type: 'divider' (default), 'underline', 'arc'
+  - color_red: custom hex for red part (default: #A3182B)
+  - color_gold: custom hex for gold part (default: #C9A227)
+{% endcomment %}
+{%- liquid
+  assign red = color_red | default: '#A3182B'
+  assign gold = color_gold | default: '#C9A227'
+  assign type = type | default: 'divider'
+-%}
+
+<div class="thread-divider-container thread-divider-container--{{ type }}">
+  {%- if type == 'divider' -%}
+    <svg class="thread-divider-svg" viewBox="0 0 1200 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+      <!-- Left side cord -->
+      {%- capture red_left -%}
+        M 0 20
+        {%- for i in (1..23) -%}
+          {%- assign x1 = i | times: 24 | minus: 12 -%}
+          {%- assign x2 = i | times: 24 -%}
+          Q {{ x1 }} 15, {{ x2 }} 20
+          {%- assign x3 = i | times: 24 | plus: 12 -%}
+          {%- assign x4 = i | times: 24 | plus: 24 -%}
+          Q {{ x3 }} 25, {{ x4 }} 20
+        {%- endfor -%}
+      {%- endcapture -%}
+      {%- capture gold_left -%}
+        M 0 20
+        {%- for i in (1..23) -%}
+          {%- assign x1 = i | times: 24 | minus: 12 -%}
+          {%- assign x2 = i | times: 24 -%}
+          Q {{ x1 }} 25, {{ x2 }} 20
+          {%- assign x3 = i | times: 24 | plus: 12 -%}
+          {%- assign x4 = i | times: 24 | plus: 24 -%}
+          Q {{ x3 }} 15, {{ x4 }} 20
+        {%- endfor -%}
+      {%- endcapture -%}
+
+      <!-- Right side cord (from x=640 to 1200) -->
+      {%- capture red_right -%}
+        M 640 20
+        {%- for i in (1..23) -%}
+          {%- assign x1 = i | times: 24 | minus: 12 | plus: 640 -%}
+          {%- assign x2 = i | times: 24 | plus: 640 -%}
+          Q {{ x1 }} 15, {{ x2 }} 20
+          {%- assign x3 = i | times: 24 | plus: 12 | plus: 640 -%}
+          {%- assign x4 = i | times: 24 | plus: 24 | plus: 640 -%}
+          Q {{ x3 }} 25, {{ x4 }} 20
+        {%- endfor -%}
+      {%- endcapture -%}
+      {%- capture gold_right -%}
+        M 640 20
+        {%- for i in (1..23) -%}
+          {%- assign x1 = i | times: 24 | minus: 12 | plus: 640 -%}
+          {%- assign x2 = i | times: 24 | plus: 640 -%}
+          Q {{ x1 }} 25, {{ x2 }} 20
+          {%- assign x3 = i | times: 24 | plus: 12 | plus: 640 -%}
+          {%- assign x4 = i | times: 24 | plus: 24 | plus: 640 -%}
+          Q {{ x3 }} 15, {{ x4 }} 20
+        {%- endfor -%}
+      {%- endcapture -%}
+
+      <!-- Left cords -->
+      <path d="{{ red_left }}" stroke="{{ red }}" stroke-width="4.5" stroke-linecap="round" fill="none" />
+      <path d="{{ gold_left }}" stroke="{{ gold }}" stroke-width="4.5" stroke-linecap="round" fill="none" />
+
+      <!-- Central decorative knot (pretzels) -->
+      <!-- Red knot loop -->
+      <path d="M 552 20 C 565 20, 575 4, 600 4 C 625 4, 630 36, 600 36 C 570 36, 575 20, 648 20" stroke="{{ red }}" stroke-width="5" fill="none" stroke-linecap="round" />
+      <!-- Gold knot loop -->
+      <path d="M 552 20 C 565 20, 575 36, 600 36 C 625 36, 630 4, 600 4 C 570 4, 575 20, 648 20" stroke="{{ gold }}" stroke-width="5" fill="none" stroke-linecap="round" />
+
+      <!-- Right cords -->
+      <path d="{{ red_right }}" stroke="{{ red }}" stroke-width="4.5" stroke-linecap="round" fill="none" />
+      <path d="{{ gold_right }}" stroke="{{ gold }}" stroke-width="4.5" stroke-linecap="round" fill="none" />
+    </svg>
+
+  {%- elsif type == 'underline' -%}
+    <svg class="thread-underline-svg" viewBox="0 0 300 12" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="none">
+      {%- capture red_under -%}
+        M 0 6
+        {%- for i in (1..25) -%}
+          {%- assign x1 = i | times: 12 | minus: 6 -%}
+          {%- assign x2 = i | times: 12 -%}
+          Q {{ x1 }} 3, {{ x2 }} 6
+          {%- assign x3 = i | times: 12 | plus: 6 -%}
+          {%- assign x4 = i | times: 12 | plus: 12 -%}
+          Q {{ x3 }} 9, {{ x4 }} 6
+        {%- endfor -%}
+      {%- endcapture -%}
+      {%- capture gold_under -%}
+        M 0 6
+        {%- for i in (1..25) -%}
+          {%- assign x1 = i | times: 12 | minus: 6 -%}
+          {%- assign x2 = i | times: 12 -%}
+          Q {{ x1 }} 9, {{ x2 }} 6
+          {%- assign x3 = i | times: 12 | plus: 6 -%}
+          {%- assign x4 = i | times: 12 | plus: 12 -%}
+          Q {{ x3 }} 3, {{ x4 }} 6
+        {%- endfor -%}
+      {%- endcapture -%}
+      <path d="{{ red_under }}" stroke="{{ red }}" stroke-width="3" stroke-linecap="round" fill="none" />
+      <path d="{{ gold_under }}" stroke="{{ gold }}" stroke-width="3" stroke-linecap="round" fill="none" />
+    </svg>
+
+  {%- elsif type == 'arc' -%}
+    <svg class="thread-arc-svg" viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <!-- Renders a circular path that goes clockwise behind the hero product -->
+      <!-- Red circle path -->
+      <circle cx="200" cy="200" r="175" stroke="{{ red }}" stroke-width="3.5" stroke-dasharray="14 10" fill="none" />
+      <!-- Gold circle path offset -->
+      <circle cx="200" cy="200" r="175" stroke="{{ gold }}" stroke-width="3.5" stroke-dasharray="14 10" stroke-dashoffset="12" fill="none" />
+    </svg>
+  {%- endif -%}
+</div>
+
+<style>
+  .thread-divider-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    user-select: none;
+    pointer-events: none;
+  }
+  .thread-divider-container--divider {
+    padding: 1.5rem 0;
+  }
+  .thread-divider-svg {
+    width: 100%;
+    max-height: 40px;
+  }
+  .thread-underline-svg {
+    width: 100%;
+    height: 12px;
+    margin-top: 4px;
+  }
+  .thread-arc-svg {
+    width: 100%;
+    height: 100%;
+    transform: rotate(0deg);
+    animation: spinSlow 30s linear infinite;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .thread-arc-svg {
+      animation: none;
+    }
+  }
+  @keyframes spinSlow {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+</style>

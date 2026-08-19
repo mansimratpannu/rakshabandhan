@@ -1,0 +1,275 @@
+{% comment %}
+  Announcement bar section with a rotating message carousel and a live dispatch-cutoff countdown timer.
+{% endcomment %}
+{%- liquid
+  assign show_countdown = false
+  if section.settings.countdown_date != blank
+    assign show_countdown = true
+  endif
+-%}
+
+<div id="AnnouncementCountdown-{{ section.id }}" class="announcement-countdown-bar color-{{ section.settings.color_scheme }}" role="region" aria-label="Announcement & Countdown">
+  <div class="announcement-countdown-container page-width">
+    <!-- Announcement Text Carousel -->
+    <div class="announcement-carousel">
+      <div class="announcement-carousel-track" id="AnnouncementTrack-{{ section.id }}">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'announcement' and block.settings.text != blank -%}
+            <div class="announcement-carousel-slide{% if forloop.first %} active{% endif %}" {{ block.shopify_attributes }}>
+              {%- if block.settings.link != blank -%}
+                <a href="{{ block.settings.link }}" class="announcement-link">
+                  {{ block.settings.text | escape }}
+                </a>
+              {%- else -%}
+                <span class="announcement-text">{{ block.settings.text | escape }}</span>
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+
+    <!-- Live Countdown Timer -->
+    {%- if show_countdown -%}
+      <div class="announcement-countdown-timer" id="Countdown-{{ section.id }}" data-datetime="{{ section.settings.countdown_date }}">
+        <span class="countdown-label eyebrow-label">{{ section.settings.countdown_label | escape }}</span>
+        <span class="countdown-numbers" id="CountdownTimer-{{ section.id }}">-- : -- : -- : --</span>
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+<style>
+  .announcement-countdown-bar {
+    background-color: var(--color-background); /* Customizer mapped: Kumkum Red #A3182B */
+    color: var(--color-foreground); /* Sandal #FBF0E7 */
+    border-bottom: 1px solid var(--color-border);
+    overflow: hidden;
+    padding: 0.8rem 0;
+  }
+  .announcement-countdown-bar.color-scheme-4 {
+    background-color: #A3182B !important;
+    color: #FBF0E7 !important;
+  }
+  .announcement-countdown-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.8rem;
+    text-align: center;
+  }
+  @media screen and (min-width: 768px) {
+    .announcement-countdown-container {
+      flex-direction: row;
+      gap: 2rem;
+      text-align: left;
+    }
+  }
+  .announcement-carousel {
+    flex: 1;
+    position: relative;
+    height: 20px;
+    overflow: hidden;
+    width: 100%;
+  }
+  .announcement-carousel-track {
+    position: relative;
+    height: 100%;
+    width: 100%;
+  }
+  .announcement-carousel-slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  @media screen and (min-width: 768px) {
+    .announcement-carousel-slide {
+      justify-content: flex-start;
+    }
+  }
+  .announcement-carousel-slide.active {
+    opacity: 1;
+    transform: translateY(0);
+    position: relative;
+  }
+  .announcement-text, .announcement-link {
+    font-size: 1.2rem;
+    font-weight: 400;
+    line-height: 1.4;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: inherit;
+    text-decoration: none;
+  }
+  .announcement-link:hover {
+    text-decoration: underline;
+  }
+  .announcement-countdown-timer {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-family: var(--font-utility-family), 'Space Mono', monospace;
+    white-space: nowrap;
+  }
+  .countdown-label {
+    font-size: 1rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: inherit;
+    opacity: 0.9;
+  }
+  .countdown-numbers {
+    font-size: 1.4rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    color: #EFA92C; /* Marigold highlights */
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .announcement-carousel-slide {
+      transition: none !important;
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Carousel Rotation
+    const track = document.getElementById('AnnouncementTrack-{{ section.id }}');
+    if (track) {
+      const slides = track.querySelectorAll('.announcement-carousel-slide');
+      let currentIndex = 0;
+      const intervalSpeed = {{ section.settings.autoplay_speed | times: 1000 | default: 5000 }};
+
+      if (slides.length > 1) {
+        setInterval(function() {
+          slides[currentIndex].classList.remove('active');
+          currentIndex = (currentIndex + 1) % slides.length;
+          slides[currentIndex].classList.add('active');
+        }, intervalSpeed);
+      }
+    }
+
+    // Countdown Timer logic
+    const countdownEl = document.getElementById('Countdown-{{ section.id }}');
+    if (countdownEl) {
+      const targetDateStr = countdownEl.getAttribute('data-datetime');
+      const timerEl = document.getElementById('CountdownTimer-{{ section.id }}');
+      
+      if (targetDateStr && timerEl) {
+        const targetDate = new Date(targetDateStr).getTime();
+
+        function updateCountdown() {
+          const now = new Date().getTime();
+          const distance = targetDate - now;
+
+          if (distance < 0) {
+            timerEl.innerHTML = "EXPIRED";
+            clearInterval(timerInterval);
+            return;
+          }
+
+          const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+          const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+          const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+          const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+          const dStr = days.toString().padStart(2, '0');
+          const hStr = hours.toString().padStart(2, '0');
+          const mStr = minutes.toString().padStart(2, '0');
+          const sStr = seconds.toString().padStart(2, '0');
+
+          timerEl.innerHTML = `${dStr}D : ${hStr}H : ${mStr}M : ${sStr}S`;
+        }
+
+        updateCountdown();
+        const timerInterval = setInterval(updateCountdown, 1000);
+      }
+    }
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Announcement Countdown",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color Scheme",
+      "default": "scheme-4"
+    },
+    {
+      "type": "range",
+      "id": "autoplay_speed",
+      "min": 3,
+      "max": 10,
+      "step": 1,
+      "unit": "s",
+      "label": "Rotating Interval (seconds)",
+      "default": 5
+    },
+    {
+      "type": "header",
+      "content": "Countdown Settings"
+    },
+    {
+      "type": "text",
+      "id": "countdown_label",
+      "label": "Countdown Label",
+      "default": "DISPATCH CUTOFF:"
+    },
+    {
+      "type": "text",
+      "id": "countdown_date",
+      "label": "Target Countdown Date",
+      "info": "Format: YYYY-MM-DDTHH:MM:SS (e.g. 2026-08-25T23:59:59)",
+      "default": "2026-08-28T23:59:59"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "announcement",
+      "name": "Announcement Message",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Announcement Text",
+          "default": "FREE ROLI-CHAWAL WITH EVERY RAKHI HAMPER ORDER"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Announcement Countdown",
+      "blocks": [
+        {
+          "type": "announcement"
+        },
+        {
+          "type": "announcement",
+          "settings": {
+            "text": "SHIPPING PAN-INDIA & WORLDWIDE — DISPATCH IN 24 HOURS"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

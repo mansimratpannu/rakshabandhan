@@ -3635,3 +3635,103 @@ details-disclosure > details {
     transform: translateX(100%) scaleX(0);
   }
 }
+
+/* ============================================================================
+   Custom Raksha Bandhan Festive Design System
+   ============================================================================ */
+
+/* 1. Global Typography & Headings */
+h1, h2, h3, h4, h5, h6,
+.h0, .h1, .h2, .h3, .h4, .h5, .h6,
+.card__heading, .product__title h1 {
+  font-family: 'Marcellus', serif !important;
+  font-weight: 400 !important;
+  letter-spacing: 0.04em !important;
+}
+
+body, p, li, a, span, input, select, textarea {
+  font-family: 'Karla', sans-serif;
+}
+
+.eyebrow-label, .microcopy, .announcement-text, .announcement-link {
+  font-family: 'Space Mono', monospace !important;
+  text-transform: uppercase;
+  letter-spacing: 0.16em !important;
+}
+
+.devanagari-accent {
+  font-family: 'Tiro Devanagari Hindi', serif !important;
+}
+
+/* 2. Logo Lockup Styling */
+.logo-lockup {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+  text-align: left;
+}
+.logo-main {
+  font-family: 'Marcellus', serif;
+  font-size: 2.2rem;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: inherit;
+}
+.logo-sub {
+  font-family: 'Tiro Devanagari Hindi', serif;
+  font-size: 1.1rem;
+  color: #C9A227; /* Gold Leaf */
+  margin-top: 1px;
+  letter-spacing: 0.04em;
+}
+
+/* 3. Zero Border-Radius Restraints */
+.button, .btn, .card, .card__inner, .card__media, 
+.variant-picker input, .variant-picker label, 
+.field__input, .select__select, .quantity__input, 
+.quantity__button, .cart-drawer, .modal__content, 
+.badge, .price-badge, .search-modal {
+  border-radius: 0px !important;
+}
+
+/* 4. Card Lift & Hover Shadows */
+.card-wrapper {
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  display: block;
+  text-decoration: none;
+  background-color: transparent;
+}
+.card-wrapper:hover {
+  transform: translateY(-4px) !important;
+  box-shadow: 0 8px 24px rgba(36, 26, 20, 0.12) !important;
+}
+
+/* 5. Utility Fonts Mappings */
+.price, .price__container, .price-item, .countdown-numbers, .timer-block {
+  font-family: 'Space Mono', monospace !important;
+}
+
+/* 6. Accessibility & Visible Focus Rings */
+*:focus-visible {
+  outline: 2px dashed #C9A227 !important; /* Gold Leaf outline */
+  outline-offset: 3px !important;
+  box-shadow: none !important;
+}
+
+/* 7. Respect Prefers Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-delay: -1ms !important;
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    background-attachment: initial !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0s !important;
+    transition-delay: 0s !important;
+  }
+  .card-wrapper:hover {
+    transform: none !important;
+    box-shadow: none !important;
+  }
+}

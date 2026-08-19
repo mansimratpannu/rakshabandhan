@@ -65,6 +65,11 @@
 
     {{ content_for_header }}
 
+    <!-- Google Fonts for Raksha Bandhan Store -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Marcellus&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&family=Tiro+Devanagari+Hindi:ital@0;1&display=swap" rel="stylesheet">
+
     {%- liquid
       assign body_font_bold = settings.type_body_font | font_modify: 'weight', 'bold'
       assign body_font_italic = settings.type_body_font | font_modify: 'style', 'italic'
@@ -124,17 +129,34 @@
       }
 
       :root {
-        --font-body-family: {{ settings.type_body_font.family }}, {{ settings.type_body_font.fallback_families }};
+        --font-body-family: 'Karla', {{ settings.type_body_font.fallback_families }};
         --font-body-style: {{ settings.type_body_font.style }};
         --font-body-weight: {{ settings.type_body_font.weight }};
         --font-body-weight-bold: {{ settings.type_body_font.weight | plus: 300 | at_most: 1000 }};
 
-        --font-heading-family: {{ settings.type_header_font.family }}, {{ settings.type_header_font.fallback_families }};
+        --font-heading-family: 'Marcellus', {{ settings.type_header_font.fallback_families }};
         --font-heading-style: {{ settings.type_header_font.style }};
         --font-heading-weight: {{ settings.type_header_font.weight }};
 
+        --font-utility-family: 'Space Mono', monospace;
+        --font-accent-family: 'Tiro Devanagari Hindi', serif;
+
         --font-body-scale: {{ settings.body_scale | divided_by: 100.0 }};
         --font-heading-scale: {{ settings.heading_scale | times: 1.0 | divided_by: settings.body_scale }};
+
+        /* Custom Raksha Bandhan Zero border-radius overrides */
+        --buttons-radius: 0px !important;
+        --buttons-radius-outset: 0px !important;
+        --inputs-radius: 0px !important;
+        --inputs-radius-outset: 0px !important;
+        --variant-pills-radius: 0px !important;
+        --product-card-corner-radius: 0px !important;
+        --collection-card-corner-radius: 0px !important;
+        --blog-card-corner-radius: 0px !important;
+        --media-radius: 0px !important;
+        --popup-corner-radius: 0px !important;
+        --badge-corner-radius: 0px !important;
+        --text-boxes-radius: 0px !important;
 
         --media-padding: {{ settings.media_padding }}px;
         --media-border-opacity: {{ settings.media_border_opacity | divided_by: 100.0 }};

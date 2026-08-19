@@ -1,0 +1,464 @@
+{% comment %}
+  Festive Hero split-layout section with a live countdown strip, double CTAs, and a thali backdrop circle for the main product image.
+{% endcomment %}
+
+<div id="Hero-{{ section.id }}" class="festive-hero color-{{ section.settings.color_scheme }} {% if section.settings.show_zigzag %}hero-has-zigzag{% endif %}">
+  <div class="festive-hero-container page-width">
+    <!-- Left Column: Content -->
+    <div class="hero-left-content">
+      {%- if section.settings.eyebrow != blank -%}
+        <span class="hero-eyebrow eyebrow-label">{{ section.settings.eyebrow | escape }}</span>
+      {%- endif -%}
+
+      {%- if section.settings.headline != blank -%}
+        <div class="hero-headline-wrapper">
+          <h1 class="hero-headline">{{ section.settings.headline | escape }}</h1>
+          <!-- Signature twisted cord underline -->
+          {%- render 'thread-divider', type: 'underline' -%}
+        </div>
+      {%- endif -%}
+
+      {%- if section.settings.body_copy != blank -%}
+        <div class="hero-bodyrte rte">
+          {{ section.settings.body_copy }}
+        </div>
+      {%- endif -%}
+
+      <!-- Two CTAs -->
+      <div class="hero-cta-wrapper">
+        {%- if section.settings.cta_1_text != blank and section.settings.cta_1_link != blank -%}
+          <a href="{{ section.settings.cta_1_link }}" class="button button--primary hero-btn-primary">
+            {{ section.settings.cta_1_text | escape }}
+          </a>
+        {%- endif -%}
+        {%- if section.settings.cta_2_text != blank and section.settings.cta_2_link != blank -%}
+          <a href="{{ section.settings.cta_2_link }}" class="button button--secondary hero-btn-secondary">
+            {{ section.settings.cta_2_text | escape }}
+          </a>
+        {%- endif -%}
+      </div>
+
+      <!-- Live Countdown Strip -->
+      {%- if section.settings.countdown_date != blank -%}
+        <div class="hero-countdown-strip" id="HeroCountdown-{{ section.id }}" data-datetime="{{ section.settings.countdown_date }}">
+          <span class="countdown-strip-label eyebrow-label">{{ section.settings.countdown_label | escape }}</span>
+          <div class="countdown-strip-timer">
+            <div class="countdown-strip-item">
+              <span class="countdown-strip-number" id="HeroDays-{{ section.id }}">00</span>
+              <span class="countdown-strip-text">DAYS</span>
+            </div>
+            <span class="countdown-strip-separator">:</span>
+            <div class="countdown-strip-item">
+              <span class="countdown-strip-number" id="HeroHours-{{ section.id }}">00</span>
+              <span class="countdown-strip-text">HOURS</span>
+            </div>
+            <span class="countdown-strip-separator">:</span>
+            <div class="countdown-strip-item">
+              <span class="countdown-strip-number" id="HeroMins-{{ section.id }}">00</span>
+              <span class="countdown-strip-text">MINS</span>
+            </div>
+            <span class="countdown-strip-separator">:</span>
+            <div class="countdown-strip-item">
+              <span class="countdown-strip-number" id="HeroSecs-{{ section.id }}">00</span>
+              <span class="countdown-strip-text">SECS</span>
+            </div>
+          </div>
+        </div>
+      {%- endif -%}
+    </div>
+
+    <!-- Right Column: Image and Thali Circle Backdrop -->
+    <div class="hero-right-image">
+      <div class="thali-backdrop-container">
+        <!-- Spinning gold cord arc behind image -->
+        <div class="thali-gold-arc">
+          {%- render 'thread-divider', type: 'arc' -%}
+        </div>
+        
+        <!-- Dark circular thali base shape -->
+        <div class="thali-circle-base"></div>
+
+        <!-- Product Image slot -->
+        <div class="thali-image-wrapper">
+          {%- if section.settings.hero_image != blank -%}
+            <img 
+              src="{{ section.settings.hero_image | image_url: width: 800 }}" 
+              alt="{{ section.settings.hero_image.alt | default: section.settings.headline | escape }}"
+              class="hero-main-image"
+              loading="eager"
+              width="450"
+              height="450"
+            >
+          {%- else -%}
+            <!-- Fallback placeholder image from assets if img_4884.png is available -->
+            <img 
+              src="{{ 'img_4884.png' | asset_url }}" 
+              alt="Rakhi Hampers Showcase"
+              class="hero-main-image"
+              loading="eager"
+              width="450"
+              height="450"
+              onerror="this.src='https://images.unsplash.com/photo-1628144547903-a1789c67bc2f?q=80&w=800';"
+            >
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Zigzag Bunting Border at Bottom -->
+  {%- if section.settings.show_zigzag -%}
+    <div class="festive-hero-bunting" aria-hidden="true">
+      <svg viewBox="0 0 100 10" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <polygon points="0,0 5,10 10,0 15,10 20,0 25,10 30,0 35,10 40,0 45,10 50,0 55,10 60,0 65,10 70,0 75,10 80,0 85,10 90,0 95,10 100,0 100,10 0,10" fill="#FBF0E7" />
+      </svg>
+    </div>
+  {%- endif -%}
+</div>
+
+<style>
+  .festive-hero {
+    position: relative;
+    background-color: var(--color-background); /* Deep Shravana green #12332C */
+    color: var(--color-foreground); /* Sandal #FBF0E7 */
+    padding: 6rem 0 8rem 0;
+    overflow: hidden;
+  }
+  .festive-hero.color-scheme-3 {
+    background-color: #12332C !important;
+    color: #FBF0E7 !important;
+  }
+  .festive-hero-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 4rem;
+    align-items: center;
+  }
+  @media screen and (min-width: 990px) {
+    .festive-hero-container {
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 6rem;
+    }
+  }
+  .hero-left-content {
+    display: flex;
+    flex-direction: column;
+    z-index: 2;
+  }
+  .hero-eyebrow {
+    color: #EFA92C; /* Marigold */
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    display: inline-block;
+  }
+  .hero-headline-wrapper {
+    margin-bottom: 2rem;
+    max-width: 600px;
+  }
+  .hero-headline {
+    font-size: clamp(3rem, 5vw, 5.2rem);
+    line-height: 1.1;
+    margin: 0;
+    color: #FBF0E7;
+  }
+  .hero-bodyrte {
+    font-size: 1.6rem;
+    line-height: 1.6;
+    margin-bottom: 3.5rem;
+    color: rgba(251, 240, 231, 0.85);
+    max-width: 540px;
+  }
+  .hero-cta-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    margin-bottom: 4rem;
+  }
+  .hero-btn-primary {
+    background-color: #EFA92C !important; /* Marigold */
+    color: #12332C !important; /* Shravana green text */
+    border-color: #EFA92C !important;
+    padding: 1.5rem 3rem;
+    font-size: 1.4rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .hero-btn-primary:hover {
+    background-color: #C9A227 !important; /* Gold Leaf on hover */
+    border-color: #C9A227 !important;
+  }
+  .hero-btn-secondary {
+    background-color: transparent !important;
+    color: #FBF0E7 !important;
+    border: 1px solid #FBF0E7 !important;
+    padding: 1.5rem 3rem;
+    font-size: 1.4rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .hero-btn-secondary:hover {
+    background-color: rgba(251, 240, 231, 0.1) !important;
+  }
+
+  /* Countdown Strip */
+  .hero-countdown-strip {
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(201, 162, 39, 0.3); /* Gold leaf outline translucent */
+    padding: 1.5rem 2rem;
+    max-width: 500px;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .countdown-strip-label {
+    color: #C9A227; /* Gold leaf */
+    font-size: 1.1rem;
+  }
+  .countdown-strip-timer {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    font-family: var(--font-utility-family), 'Space Mono', monospace;
+  }
+  .countdown-strip-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .countdown-strip-number {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #EFA92C; /* Marigold */
+  }
+  .countdown-strip-text {
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    opacity: 0.7;
+    margin-top: 2px;
+  }
+  .countdown-strip-separator {
+    font-size: 2rem;
+    font-weight: 700;
+    color: rgba(251, 240, 231, 0.3);
+    padding-bottom: 1.4rem;
+  }
+
+  /* Right Side: Thali Backdrop Circle & Image */
+  .hero-right-image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+  }
+  .thali-backdrop-container {
+    position: relative;
+    width: min(100%, 450px);
+    aspect-ratio: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .thali-gold-arc {
+    position: absolute;
+    width: 112%;
+    height: 112%;
+    z-index: 0;
+  }
+  .thali-circle-base {
+    position: absolute;
+    width: 90%;
+    height: 90%;
+    background-color: #241A14; /* Ink/dark thali base color */
+    border-radius: 50% !important; /* Keep circle circular */
+    z-index: 1;
+    box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.6), 0 10px 30px rgba(0, 0, 0, 0.4);
+    border: 3px double #C9A227; /* Dashed/Double Gold leaf leaf ring */
+  }
+  .thali-image-wrapper {
+    position: relative;
+    z-index: 2;
+    width: 78%;
+    height: 78%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .hero-main-image {
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+    filter: drop-shadow(0 15px 25px rgba(0, 0, 0, 0.45));
+    transition: transform 0.5s ease;
+  }
+  .hero-main-image:hover {
+    transform: scale(1.04) rotate(2deg);
+  }
+
+  /* Bunting style cutout bottom */
+  .festive-hero-bunting {
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 100%;
+    height: 20px;
+    z-index: 3;
+    pointer-events: none;
+  }
+  .festive-hero-bunting svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-main-image:hover {
+      transform: none;
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const countdownEl = document.getElementById('HeroCountdown-{{ section.id }}');
+    if (countdownEl) {
+      const targetDateStr = countdownEl.getAttribute('data-datetime');
+      const dEl = document.getElementById('HeroDays-{{ section.id }}');
+      const hEl = document.getElementById('HeroHours-{{ section.id }}');
+      const mEl = document.getElementById('HeroMins-{{ section.id }}');
+      const sEl = document.getElementById('HeroSecs-{{ section.id }}');
+
+      if (targetDateStr && dEl && hEl && mEl && sEl) {
+        const targetDate = new Date(targetDateStr).getTime();
+
+        function updateTimer() {
+          const now = new Date().getTime();
+          const distance = targetDate - now;
+
+          if (distance < 0) {
+            dEl.innerText = "00";
+            hEl.innerText = "00";
+            mEl.innerText = "00";
+            sEl.innerText = "00";
+            clearInterval(timerInterval);
+            return;
+          }
+
+          const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+          const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+          const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+          const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+          dEl.innerText = days.toString().padStart(2, '0');
+          hEl.innerText = hours.toString().padStart(2, '0');
+          mEl.innerText = minutes.toString().padStart(2, '0');
+          sEl.innerText = seconds.toString().padStart(2, '0');
+        }
+
+        updateTimer();
+        const timerInterval = setInterval(updateTimer, 1000);
+      }
+    }
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Festive Hero",
+  "tag": "section",
+  "class": "section-festive-hero",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color Scheme",
+      "default": "scheme-3"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow Text",
+      "default": "CELEBRATE SACRED BONDS"
+    },
+    {
+      "type": "text",
+      "id": "headline",
+      "label": "Headline",
+      "default": "Handcrafted Threads of Love & Protection"
+    },
+    {
+      "type": "richtext",
+      "id": "body_copy",
+      "label": "Body Copy",
+      "default": "<p>Gift your sibling an artisanal Rakhi crafted by rural weavers, wrapped in traditional roli-chawal and packed in luxurious festive boxes.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Call to Actions"
+    },
+    {
+      "type": "text",
+      "id": "cta_1_text",
+      "label": "Primary CTA Text",
+      "default": "Explore Rakhis"
+    },
+    {
+      "type": "url",
+      "id": "cta_1_link",
+      "label": "Primary CTA Link"
+    },
+    {
+      "type": "text",
+      "id": "cta_2_text",
+      "label": "Secondary CTA Text",
+      "default": "Gift Hampers"
+    },
+    {
+      "type": "url",
+      "id": "cta_2_link",
+      "label": "Secondary CTA Link"
+    },
+    {
+      "type": "header",
+      "content": "Image & Thali Settings"
+    },
+    {
+      "type": "image_picker",
+      "id": "hero_image",
+      "label": "Hero Product Image",
+      "info": "Transparent background PNG recommended"
+    },
+    {
+      "type": "header",
+      "content": "Countdown Timer"
+    },
+    {
+      "type": "text",
+      "id": "countdown_label",
+      "label": "Timer Label",
+      "default": "GUARANTEED DELIVERY BEFORE THE FESTIVAL CLOSES IN:"
+    },
+    {
+      "type": "text",
+      "id": "countdown_date",
+      "label": "Countdown Date",
+      "info": "Format: YYYY-MM-DDTHH:MM:SS (e.g. 2026-08-25T23:59:59)",
+      "default": "2026-08-28T23:59:59"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_zigzag",
+      "label": "Show Zigzag Bunting Bottom",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "Festive Hero"
+    }
+  ]
+}
+{% endschema %}

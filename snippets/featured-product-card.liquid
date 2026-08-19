@@ -1,0 +1,102 @@
+{% comment %}
+  Renders a single featured product card.
+  Accepts:
+  - product: {Object} Product object
+{% endcomment %}
+
+{%- liquid
+  assign variant = product.selected_or_first_available_variant
+  assign compare_at = variant.compare_at_price
+  assign price = variant.price
+  assign on_sale = false
+  if compare_at > price
+    assign on_sale = true
+  endif
+-%}
+
+<div class="featured-product-card card-wrapper">
+  <!-- Card image and badge -->
+  <div class="product-card-image-wrapper">
+    <!-- Sale Badge -->
+    {%- if on_sale -%}
+      <span class="product-card-badge">{{ 'products.product.on_sale' | t | default: 'Sale' }}</span>
+    {%- elsif product.tags contains 'Handmade' -%}
+      <span class="product-card-badge" style="background-color: #12332C;">Handmade</span>
+    {%- elsif product.tags contains 'Bestseller' -%}
+      <span class="product-card-badge" style="background-color: #C9A227;">Bestseller</span>
+    {%- endif -%}
+
+    <a href="{{ product.url }}" class="product-card-link">
+      {%- if product.featured_media != blank -%}
+        <img 
+          src="{{ product.featured_media | image_url: width: 450 }}" 
+          alt="{{ product.featured_media.alt | default: product.title | escape }}"
+          class="product-card-image"
+          loading="lazy"
+          width="200"
+          height="200"
+        >
+      {%- else -%}
+        {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg product-card-image' }}
+      {%- endif -%}
+    </a>
+  </div>
+
+  <!-- Card Info -->
+  <div class="product-card-info">
+    <h3 class="product-card-title">
+      <a href="{{ product.url }}">{{ product.title | escape }}</a>
+    </h3>
+
+    <!-- Variant Meta Line -->
+    {%- liquid
+      assign meta_line = ""
+      if product.metafields.custom.material != blank
+        assign meta_line = product.metafields.custom.material
+      else
+        assign meta_line = product.options_with_values[0].values[0] | default: "Classic"
+      endif
+      
+      assign set_size = product.metafields.custom.set_size | default: ""
+      if set_size != blank
+        assign meta_line = meta_line | append: " — Set of " | append: set_size
+      endif
+    -%}
+    <p class="product-card-meta">{{ meta_line | escape }}</p>
+
+    <!-- Pricing Container -->
+    <div class="product-card-price-container">
+      <span class="price-item price-item--sale">
+        {{ price | money_with_currency }}
+      </span>
+      {%- if on_sale -%}
+        <span class="price-item price-item--compare">
+          {{ compare_at | money_with_currency }}
+        </span>
+        {%- liquid
+          assign diff = compare_at | minus: price
+          assign pct = diff | times: 100 | divided_by: compare_at
+        -%}
+        <span class="product-discount-badge">{{ pct }}% OFF</span>
+      {%- endif -%}
+    </div>
+
+    <!-- AJAX Add to Cart form -->
+    <form method="post" action="{{ routes.cart_add_url }}" class="ajax-cart-form" enctype="multipart/form-data">
+      <input type="hidden" name="id" value="{{ variant.id }}">
+      <input type="hidden" name="quantity" value="1">
+      <button 
+        type="submit" 
+        name="add" 
+        class="button product-card-add-btn"
+        {% unless variant.available %}disabled{% endunless %}
+      >
+        {%- if variant.available -%}
+          {{ 'products.product.add_to_cart' | t | default: 'Add to Cart' }}
+        {%- else -%}
+          {{ 'products.product.sold_out' | t | default: 'Sold Out' }}
+        {%- endif -%}
+      </button>
+    </form>
+  </div>
+</div>

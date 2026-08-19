@@ -1,0 +1,35 @@
+{% comment %}
+  Section wrapper for the twisted red-and-gold cord divider.
+  Allows merchants to place the signature cord divider anywhere in Online Store 2.0 templates.
+{% endcomment %}
+
+<div class="section-thread-divider-wrapper" style="background: transparent;">
+  {%- render 'thread-divider', type: 'divider', color_red: section.settings.color_red, color_gold: section.settings.color_gold -%}
+</div>
+
+{% schema %}
+{
+  "name": "Thread Divider",
+  "tag": "section",
+  "class": "section-thread-divider",
+  "settings": [
+    {
+      "type": "color",
+      "id": "color_red",
+      "label": "Red Thread Color",
+      "default": "#A3182B"
+    },
+    {
+      "type": "color",
+      "id": "color_gold",
+      "label": "Gold Thread Color",
+      "default": "#C9A227"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Thread Divider"
+    }
+  ]
+}
+{% endschema %}

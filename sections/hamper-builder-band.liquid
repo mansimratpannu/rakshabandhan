@@ -1,0 +1,266 @@
+{% comment %}
+  Hamper Builder Band: Kumkum red full-bleed band section.
+  Left column: Headline, copy, and CTA.
+  Right column: Numbered 4-step list.
+{% endcomment %}
+
+<div id="HamperBuilder-{{ section.id }}" class="hamper-builder-section color-{{ section.settings.color_scheme }} full-bleed-band">
+  <div class="hamper-builder-container page-width">
+    <!-- Left Column: Copy & Action -->
+    <div class="hamper-builder-left">
+      {%- if section.settings.eyebrow != blank -%}
+        <span class="hamper-eyebrow eyebrow-label">{{ section.settings.eyebrow | escape }}</span>
+      {%- endif -%}
+      
+      {%- if section.settings.headline != blank -%}
+        <h2 class="hamper-headline h1">{{ section.settings.headline | escape }}</h2>
+      {%- endif -%}
+
+      {%- if section.settings.description != blank -%}
+        <div class="hamper-desc rte">
+          {{ section.settings.description }}
+        </div>
+      {%- endif -%}
+
+      {%- if section.settings.cta_text != blank and section.settings.cta_link != blank -%}
+        <a href="{{ section.settings.cta_link }}" class="button hamper-cta-btn">
+          {{ section.settings.cta_text | escape }}
+        </a>
+      {%- endif -%}
+    </div>
+
+    <!-- Right Column: Numbered List -->
+    <div class="hamper-builder-right">
+      <ol class="hamper-steps-list">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'step' -%}
+            <li class="hamper-step-item" {{ block.shopify_attributes }}>
+              <div class="step-number-badge">
+                <span class="step-num-text">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</span>
+              </div>
+              <div class="step-content">
+                <h3 class="step-title">{{ block.settings.title | escape }}</h3>
+                <p class="step-desc">{{ block.settings.subtext | escape }}</p>
+              </div>
+            </li>
+          {%- endif -%}
+        {%- endfor -%}
+      </ol>
+    </div>
+  </div>
+</div>
+
+<style>
+  .hamper-builder-section {
+    background-color: #A3182B !important; /* Kumkum Red full-bleed default #A3182B */
+    color: #FBF0E7 !important; /* Sandal text */
+    padding: 6rem 0;
+    box-sizing: border-box;
+  }
+  .hamper-builder-section.color-scheme-4 {
+    background-color: #A3182B !important;
+    color: #FBF0E7 !important;
+  }
+  .hamper-builder-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 4rem;
+    align-items: center;
+  }
+  @media screen and (min-width: 990px) {
+    .hamper-builder-container {
+      grid-template-columns: 1fr 1.2fr;
+      gap: 6rem;
+    }
+  }
+  
+  /* Left Column */
+  .hamper-builder-left {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .hamper-eyebrow {
+    color: #EFA92C; /* Marigold */
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+  }
+  .hamper-headline {
+    color: #FBF0E7;
+    margin: 0 0 2rem 0;
+    font-size: clamp(2.8rem, 4vw, 4.2rem);
+    line-height: 1.2;
+  }
+  .hamper-desc {
+    color: rgba(251, 240, 231, 0.85);
+    font-size: 1.5rem;
+    line-height: 1.6;
+    margin-bottom: 3rem;
+  }
+  .hamper-desc p {
+    margin: 0;
+  }
+  .hamper-cta-btn {
+    background-color: #EFA92C !important; /* Marigold */
+    color: #241A14 !important; /* Ink text */
+    border: 1px solid #EFA92C !important;
+    padding: 1.5rem 3rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .hamper-cta-btn:hover {
+    background-color: #C9A227 !important; /* Gold Leaf */
+    border-color: #C9A227 !important;
+  }
+
+  /* Right Column: Numbered List */
+  .hamper-steps-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+  }
+  .hamper-step-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 2rem;
+  }
+  .step-number-badge {
+    background-color: rgba(251, 240, 231, 0.1);
+    border: 1px dashed #C9A227; /* Gold Leaf dashed border */
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+  }
+  .step-num-text {
+    font-family: 'Space Mono', monospace;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #EFA92C; /* Marigold */
+  }
+  .step-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+  .step-title {
+    font-family: 'Marcellus', serif;
+    font-size: 1.8rem;
+    color: #FBF0E7;
+    margin: 0;
+    font-weight: 400;
+  }
+  .step-desc {
+    font-size: 1.3rem;
+    color: rgba(251, 240, 231, 0.8);
+    margin: 0;
+    line-height: 1.4;
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Hamper Builder Band",
+  "tag": "section",
+  "class": "section-hamper-builder-band",
+  "max_blocks": 4,
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color Scheme",
+      "default": "scheme-4"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow Label",
+      "default": "BESPOKE FESTIVE CURATIONS"
+    },
+    {
+      "type": "text",
+      "id": "headline",
+      "label": "Build Your Own Rakhi Gift Hamper"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "default": "<p>Make this Raksha Bandhan extra special. Build a custom hamper filled with gourmet sweets, healthy nuts, dry fruits, puja thali, and premium artisanal thread rakhis.</p>"
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "CTA Button Text",
+      "default": "Start Customizing"
+    },
+    {
+      "type": "url",
+      "id": "cta_link",
+      "label": "CTA Link"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "step",
+      "name": "Step Details",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Step Title",
+          "default": "Select the Thread"
+        },
+        {
+          "type": "text",
+          "id": "subtext",
+          "label": "Step Description",
+          "default": "Pick from classic cotton, designer silver, bhaiya-bhabhi lumbas, or kids cartoon rakhis."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hamper Builder Band",
+      "blocks": [
+        {
+          "type": "step",
+          "settings": {
+            "title": "Select the Thread",
+            "subtext": "Choose from our catalog of rural-weaver handcrafted designer Rakhis."
+          }
+        },
+        {
+          "type": "step",
+          "settings": {
+            "title": "Add Sweets & Delicacies",
+            "subtext": "Add pure-ghee Kaju Katli, Motichoor Ladoos, roasted almonds, or premium chocolates."
+          }
+        },
+        {
+          "type": "step",
+          "settings": {
+            "title": "Include Pooja Elements",
+            "subtext": "Every hamper automatically includes traditional Roli and Chawal packets in handmade boxes."
+          }
+        },
+        {
+          "type": "step",
+          "settings": {
+            "title": "Write a Gift Card",
+            "subtext": "Add a customized personal message which we will print on our gold-leaf scroll card."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
