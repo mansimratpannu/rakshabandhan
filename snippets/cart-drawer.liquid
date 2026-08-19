@@ -74,6 +74,33 @@
           </span>
         </button>
       </div>
+        <!-- Free Shipping Progress Bar -->
+        {%- liquid
+          assign free_shipping_threshold = settings.free_shipping_threshold | default: 1000
+          assign threshold_cents = free_shipping_threshold | times: 100
+          assign cart_total = cart.total_price
+          assign progress_pct = 0
+          if cart_total > 0
+            assign progress_pct = cart_total | times: 100 | divided_by: threshold_cents
+            if progress_pct > 100
+              assign progress_pct = 100
+            endif
+          endif
+          assign difference = threshold_cents | minus: cart_total
+        -%}
+        <div class="cart-drawer-shipping-progress" style="padding: 1.5rem 2.5rem; background-color: #F3E3D3; border-bottom: 1px solid rgba(201, 162, 39, 0.2); box-sizing: border-box; width: 100%;">
+          <div class="shipping-progress-text" style="font-size: 1.2rem; margin-bottom: 0.8rem; font-weight: 700; color: #241A14; font-family: 'Space Mono', monospace; text-transform: uppercase;">
+            {%- if cart_total >= threshold_cents -%}
+              <span style="color: #12332C;">🎉 CONGRATULATIONS! YOU'VE UNLOCKED FREE SHIPPING!</span>
+            {%- else -%}
+              <span>YOU ARE ONLY <span style="color: #A3182B;">{{ difference | money }}</span> AWAY FROM FREE SHIPPING!</span>
+            {%- endif -%}
+          </div>
+          <div class="shipping-progress-bar-bg" style="width: 100%; height: 8px; background-color: rgba(36,26,20,0.1); border-radius: 0;">
+            <div class="shipping-progress-bar-fill" style="width: {{ progress_pct }}%; height: 100%; background-color: #12332C; transition: width 0.3s ease;"></div>
+          </div>
+        </div>
+
       <cart-drawer-items
         view-event-payload="{{ cart | standard_event_data: 'view', context: 'dialog' | escape }}"
         view-event-trigger="manual"
@@ -508,8 +535,119 @@
           </details>
         {%- endif -%}
 
-        <!-- Start blocks -->
-        <!-- Subtotals -->
+        {%- liquid
+          assign roli_chawal_in_cart = false
+          assign roli_chawal_variant_id = nil
+          
+          for item in cart.items
+            if item.product.handle == 'roli-chawal-packet' or item.product.tags contains 'RoliChawal'
+              assign roli_chawal_in_cart = true
+              assign roli_chawal_variant_id = item.variant_id
+            endif
+          endfor
+
+          if roli_chawal_variant_id == nil
+            assign rc_product = all_products['roli-chawal-packet']
+            if rc_product != blank
+              assign roli_chawal_variant_id = rc_product.first_available_variant.id
+            endif
+          endif
+        -%}
+
+        {%- if roli_chawal_variant_id != blank or true -%}
+          <!-- Free Roli-Chawal packet checkbox -->
+          <div class="cart-drawer-roli-chawal" style="padding: 1.5rem 2rem; background-color: rgba(163, 24, 43, 0.05); border: 1px dashed #A3182B; margin: 1.5rem 2rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; box-sizing: border-box;">
+            <div style="display: flex; align-items: center; gap: 1.2rem;">
+              <input 
+                type="checkbox" 
+                id="RoliChawalToggle" 
+                data-variant-id="{{ roli_chawal_variant_id | default: '45000000000000' }}"
+                {% if roli_chawal_in_cart %}checked{% endif %}
+                style="width: 18px; height: 18px; accent-color: #A3182B; cursor: pointer; border-radius: 0 !important;"
+              >
+              <label for="RoliChawalToggle" style="font-size: 1.2rem; color: #241A14; cursor: pointer; font-weight: 700; font-family: 'Karla', sans-serif;">
+                Add FREE traditional Roli-Chawal packet?
+              </label>
+            </div>
+            <span style="font-family: 'Space Mono', monospace; font-size: 1.1rem; font-weight: 700; color: #A3182B; letter-spacing: 0.05em;">FREE</span>
+          </div>
+
+          <script>
+            (function() {
+              function initRoliChawal() {
+                const toggle = document.getElementById('RoliChawalToggle');
+                if (!toggle) return;
+                // Avoid binding multiple times
+                if (toggle.dataset.initialized) return;
+                toggle.dataset.initialized = 'true';
+
+                toggle.addEventListener('change', function() {
+                  const variantId = toggle.getAttribute('data-variant-id');
+                  toggle.disabled = true;
+
+                  if (toggle.checked) {
+                    fetch(window.routes.cart_add_url, {
+                      method: 'POST',
+                      headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                      },
+                      body: JSON.stringify({
+                        id: variantId,
+                        quantity: 1
+                      })
+                    })
+                    .then(res => {
+                      if (!res.ok) throw new Error('Error adding Roli-Chawal');
+                      return res.json();
+                    })
+                    .then(() => {
+                      location.reload();
+                    })
+                    .catch(err => {
+                      console.error(err);
+                      toggle.checked = false;
+                      toggle.disabled = false;
+                    });
+                  } else {
+                    fetch('/cart/change.js', {
+                      method: 'POST',
+                      headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                      },
+                      body: JSON.stringify({
+                        id: variantId,
+                        quantity: 0
+                      })
+                    })
+                    .then(res => {
+                      if (!res.ok) throw new Error('Error removing Roli-Chawal');
+                      return res.json();
+                    })
+                    .then(() => {
+                      location.reload();
+                    })
+                    .catch(err => {
+                      console.error(err);
+                      toggle.checked = true;
+                      toggle.disabled = false;
+                    });
+                  }
+                });
+              }
+
+              // Run on load
+              document.addEventListener('DOMContentLoaded', initRoliChawal);
+              
+              // Handle dynamically loaded/rendered drawers
+              const observer = new MutationObserver(function(mutations) {
+                initRoliChawal();
+              });
+              observer.observe(document.body, { childList: true, subtree: true });
+            })();
+          </script>
+        {%- endif -%}
 
         <div class="cart-drawer__footer" {{ block.shopify_attributes }}>
           <div>
