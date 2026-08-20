@@ -1,0 +1,51 @@
+{%- comment %}
+  Renders the asset filename for a given product handle.
+  Accepts:
+  - handle: {String} Product handle (optional, defaults to product.handle)
+{% endcomment -%}
+{%- liquid
+  assign target_handle = handle | default: product.handle
+  assign img = ""
+  if target_handle == 'naksh-circular-beaded-rakhi'
+    assign img = 'img_4901.jpg'
+  elsif target_handle == 'naksh-tree-of-life-lumba-set'
+    assign img = 'img_4902.jpg'
+  elsif target_handle == 'naksh-swastik-gold-rakhi'
+    assign img = 'img_4903.jpg'
+  elsif target_handle == 'naksh-kids-cartoon-rakhi'
+    assign img = 'img_4904.jpg'
+  elsif target_handle == 'naksh-kids-spinner-spiderman-rakhi'
+    assign img = 'img_4905.jpg'
+  elsif target_handle == 'naksh-traditional-thread-rakhi'
+    assign img = 'img_4906.jpg'
+  elsif target_handle == 'naksh-beaded-lumba-rakhi'
+    assign img = 'img_4907.jpg'
+  elsif target_handle == 'naksh-silver-plated-om-rakhi'
+    assign img = 'img_4908.jpg'
+  elsif target_handle == 'naksh-zardosi-embroidered-rakhi'
+    assign img = 'img_4909.jpg'
+  elsif target_handle == 'naksh-rudraksha-diamond-rakhi'
+    assign img = 'img_4910.jpg'
+  elsif target_handle == 'naksh-brass-puja-thali'
+    assign img = 'img_4911.jpg'
+  elsif target_handle == 'naksh-royal-kaju-sweets-hamper'
+    assign img = 'img_4912.jpg'
+  elsif target_handle == 'naksh-almond-dry-fruits-hamper'
+    assign img = 'img_4913.jpg'
+  elsif target_handle == 'naksh-silver-puja-thali'
+    assign img = 'img_4914.jpg'
+  elsif target_handle == 'naksh-peacock-designer-lumba'
+    assign img = 'img_4915.jpg'
+  elsif target_handle == 'naksh-terracotta-ganesha-lumba'
+    assign img = 'img_4916.jpg'
+  elsif target_handle == 'naksh-wooden-painted-thali'
+    assign img = 'img_4917.jpg'
+  elsif target_handle == 'naksh-kids-led-mickey-rakhi'
+    assign img = 'img_4918.jpg'
+  elsif target_handle == 'naksh-luxury-thali-hamper'
+    assign img = 'img_4884.png'
+  elsif target_handle == 'naksh-designer-rakhi-hamper'
+    assign img = 'img_4885.png'
+  endif
+  echo img
+-%}

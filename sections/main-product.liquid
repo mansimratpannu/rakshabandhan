@@ -864,8 +864,16 @@
 <div class="sticky-mobile-cart-bar color-scheme-1 hidden-desktop" id="StickyMobileCartBar-{{ section.id }}">
   <div class="sticky-mobile-cart-container">
     <div class="sticky-mobile-cart-info">
+      {%- liquid
+        capture fallback_img
+          render 'fallback-image', handle: product.handle
+        endcapture
+        assign fallback_img = fallback_img | strip
+      -%}
       {%- if product.featured_media != blank -%}
         <img src="{{ product.featured_media | image_url: width: 100 }}" alt="{{ product.title | escape }}" class="sticky-mobile-cart-img" width="40" height="40" loading="lazy">
+      {%- elsif fallback_img != blank -%}
+        <img src="{{ fallback_img | asset_url }}" alt="{{ product.title | escape }}" class="sticky-mobile-cart-img" width="40" height="40" loading="lazy">
       {%- endif -%}
       <div class="sticky-mobile-cart-text">
         <h4 class="sticky-mobile-cart-title">{{ product.title | escape }}</h4>

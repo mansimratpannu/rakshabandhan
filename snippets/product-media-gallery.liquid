@@ -61,6 +61,27 @@
       class="product__media-list contains-media grid grid--peek list-unstyled slider slider--mobile"
       role="list"
     >
+      {%- if media_count == 0 -%}
+        {%- liquid
+          capture fallback_img
+            render 'fallback-image', handle: product.handle
+          endcapture
+          assign fallback_img = fallback_img | strip
+        -%}
+        {%- if fallback_img != blank -%}
+          <li class="product__media-item grid__item slider__slide is-active product__media-item--single">
+            <div class="product__media media media--transparent" style="padding-top: 100%;">
+              <img
+                src="{{ fallback_img | asset_url }}"
+                alt="{{ product.title | escape }}"
+                class="global-media-settings"
+                loading="eager"
+                style="object-fit: contain; width: 100%; height: 100%; position: absolute; top: 0; left: 0;"
+              >
+            </div>
+          </li>
+        {%- endif -%}
+      {%- endif -%}
       {%- if product.selected_or_first_available_variant.featured_media != null -%}
         {%- assign featured_media = product.selected_or_first_available_variant.featured_media -%}
         <li

@@ -27,6 +27,12 @@
     {%- endif -%}
 
     <a href="{{ product.url }}" class="product-card-link">
+      {%- liquid
+        capture fallback_img
+          render 'fallback-image', handle: product.handle
+        endcapture
+        assign fallback_img = fallback_img | strip
+      -%}
       {%- if product.featured_media != blank -%}
         <img 
           src="{{ product.featured_media | image_url: width: 450 }}" 
@@ -35,6 +41,16 @@
           loading="lazy"
           width="200"
           height="200"
+        >
+      {%- elsif fallback_img != blank -%}
+        <img 
+          src="{{ fallback_img | asset_url }}" 
+          alt="{{ product.title | escape }}"
+          class="product-card-image"
+          loading="lazy"
+          width="200"
+          height="200"
+          style="object-fit: contain;"
         >
       {%- else -%}
         {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg product-card-image' }}
