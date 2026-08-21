@@ -131,10 +131,31 @@
           {%- liquid
             assign is_empty_override = false
             assign col_handle = collection.handle
-            if collection.all_products_count == 0 or collection == nil
-              if col_handle == 'classic-rakhis' or col_handle == 'fancy-rakhis' or col_handle == 'fancy' or col_handle == 'kids-rakhis' or col_handle == 'childrens-rakhis' or col_handle == 'children-rakhis'
-                assign is_empty_override = true
+            
+            # Detect active tag filters
+            assign has_thread_tag = false
+            assign has_fancy_tag = false
+            assign has_kids_tag = false
+            for tag in current_tags
+              assign downcase_tag = tag | downcase
+              if downcase_tag == 'thread'
+                assign has_thread_tag = true
+              elsif downcase_tag == 'fancy'
+                assign has_fancy_tag = true
+              elsif downcase_tag == 'kids' or downcase_tag == 'children'
+                assign has_kids_tag = true
               endif
+            endfor
+
+            if col_handle == 'classic-rakhis' or has_thread_tag
+              assign is_empty_override = true
+              assign target_category = 'classic'
+            elsif col_handle == 'fancy-rakhis' or col_handle == 'fancy' or has_fancy_tag
+              assign is_empty_override = true
+              assign target_category = 'fancy'
+            elsif col_handle == 'kids-rakhis' or col_handle == 'childrens-rakhis' or col_handle == 'children-rakhis' or has_kids_tag
+              assign is_empty_override = true
+              assign target_category = 'kids'
             endif
           -%}
           {%- if collection.products.size == 0 and is_empty_override == false -%}
@@ -172,18 +193,18 @@
                       assign is_match = false
                       assign handle_to_check = product.handle
                       
-                      if col_handle == 'classic-rakhis'
+                      if target_category == 'classic'
                         if product.tags contains 'Thread'
                           # Exclude Fancy items and Spiderman 4-pack from Classic
                           if handle_to_check != 'naksh-swastik-gold-rakhi' and handle_to_check != 'madhav-kids-spiderman-4pack-rakhi' and handle_to_check != 'naksh-tree-of-life-lumba-set' and handle_to_check != 'naksh-tree-of-life-fancy-rakhi-set' and handle_to_check != 'naksh-peacock-designer-lumba' and handle_to_check != 'naksh-square-crystal-beaded-fancy-rakhi-set' and handle_to_check != 'naksh-terracotta-ganesha-lumba' and handle_to_check != 'naksh-evil-eye-beaded-fancy-rakhi-set' and handle_to_check != 'naksh-traditional-thread-rakhi' and handle_to_check != 'naksh-designer-letter-beaded-fancy-rakhi-set'
                             assign is_match = true
                           endif
                         endif
-                      elsif col_handle == 'fancy-rakhis' or col_handle == 'fancy'
+                      elsif target_category == 'fancy'
                         if product.tags contains 'Fancy' or handle_to_check == 'naksh-tree-of-life-lumba-set' or handle_to_check == 'naksh-tree-of-life-fancy-rakhi-set' or handle_to_check == 'naksh-peacock-designer-lumba' or handle_to_check == 'naksh-square-crystal-beaded-fancy-rakhi-set' or handle_to_check == 'naksh-terracotta-ganesha-lumba' or handle_to_check == 'naksh-evil-eye-beaded-fancy-rakhi-set' or handle_to_check == 'naksh-traditional-thread-rakhi' or handle_to_check == 'naksh-designer-letter-beaded-fancy-rakhi-set'
                           assign is_match = true
                         endif
-                      elsif col_handle == 'kids-rakhis' or col_handle == 'childrens-rakhis' or col_handle == 'children-rakhis'
+                      elsif target_category == 'kids'
                         if product.tags contains 'Kids' or handle_to_check == 'naksh-swastik-gold-rakhi' or handle_to_check == 'madhav-kids-spiderman-4pack-rakhi' or handle_to_check == 'naksh-beaded-lumba-rakhi' or handle_to_check == 'navrang-kids-spiderman-doll-12-box'
                           assign is_match = true
                         endif
