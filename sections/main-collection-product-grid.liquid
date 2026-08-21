@@ -128,7 +128,16 @@
             data-cascade
           {% endif %}
         >
-          {%- if collection.products.size == 0 -%}
+          {%- liquid
+            assign is_empty_override = false
+            assign col_handle = collection.handle
+            if collection.all_products_count == 0 or collection == nil
+              if col_handle == 'classic-rakhis' or col_handle == 'bhaiya-bhabhi-lumba' or col_handle == 'kids-rakhis' or col_handle == 'pooja-thalis' or col_handle == 'gourmet-hampers'
+                assign is_empty_override = true
+              endif
+            endif
+          -%}
+          {%- if collection.products.size == 0 and is_empty_override == false -%}
             <div class="collection collection--empty page-width" id="product-grid" data-id="{{ section.id }}">
               <div class="loading-overlay gradient"></div>
               <div class="title-wrapper center">
@@ -156,35 +165,73 @@
                   {% if section.settings.quick_add == 'bulk' %} collection-quick-add-bulk{% endif %}
                 "
               >
-                {% assign skip_card_product_styles = false %}
-                {%- for product in collection.products -%}
-                  {% assign lazy_load = false %}
-                  {%- if forloop.index > 2 -%}
-                    {%- assign lazy_load = true -%}
-                  {%- endif -%}
-                  <li
-                    class="grid__item{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
-                    {% if settings.animations_reveal_on_scroll %}
-                      data-cascade
-                      style="--animation-order: {{ forloop.index }};"
-                    {% endif %}
-                  >
-                    {% render 'card-product',
-                      card_product: product,
-                      media_aspect_ratio: section.settings.image_ratio,
-                      image_shape: section.settings.image_shape,
-                      show_secondary_image: section.settings.show_secondary_image,
-                      show_vendor: section.settings.show_vendor,
-                      show_rating: section.settings.show_rating,
-                      lazy_load: lazy_load,
-                      skip_styles: skip_card_product_styles,
-                      quick_add: section.settings.quick_add,
-                      section_id: section.id,
-                      product_view_context: 'collection'
-                    %}
-                  </li>
-                  {%- assign skip_card_product_styles = true -%}
-                {%- endfor -%}
+                {%- if is_empty_override -%}
+                  {% assign skip_card_product_styles = false %}
+                  {%- for product in collections.all.products -%}
+                    {%- liquid
+                      assign is_match = false
+                      if col_handle == 'classic-rakhis' and product.tags contains 'Thread'
+                        assign is_match = true
+                      elsif col_handle == 'bhaiya-bhabhi-lumba' and product.tags contains 'Lumba'
+                        assign is_match = true
+                      elsif col_handle == 'kids-rakhis' and product.tags contains 'Kids'
+                        assign is_match = true
+                      elsif col_handle == 'pooja-thalis' and product.tags contains 'Thali'
+                        assign is_match = true
+                      elsif col_handle == 'gourmet-hampers' and product.tags contains 'Hamper'
+                        assign is_match = true
+                      endif
+                    -%}
+                    {%- if is_match -%}
+                      <li class="grid__item">
+                        {% render 'card-product',
+                          card_product: product,
+                          media_aspect_ratio: section.settings.image_ratio,
+                          image_shape: section.settings.image_shape,
+                          show_secondary_image: section.settings.show_secondary_image,
+                          show_vendor: section.settings.show_vendor,
+                          show_rating: section.settings.show_rating,
+                          lazy_load: true,
+                          skip_styles: skip_card_product_styles,
+                          quick_add: section.settings.quick_add,
+                          section_id: section.id,
+                          product_view_context: 'collection'
+                        %}
+                      </li>
+                      {%- assign skip_card_product_styles = true -%}
+                    {%- endif -%}
+                  {%- endfor -%}
+                {%- else -%}
+                  {% assign skip_card_product_styles = false %}
+                  {%- for product in collection.products -%}
+                    {% assign lazy_load = false %}
+                    {%- if forloop.index > 2 -%}
+                      {%- assign lazy_load = true -%}
+                    {%- endif -%}
+                    <li
+                      class="grid__item{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
+                      {% if settings.animations_reveal_on_scroll %}
+                        data-cascade
+                        style="--animation-order: {{ forloop.index }};"
+                      {% endif %}
+                    >
+                      {% render 'card-product',
+                        card_product: product,
+                        media_aspect_ratio: section.settings.image_ratio,
+                        image_shape: section.settings.image_shape,
+                        show_secondary_image: section.settings.show_secondary_image,
+                        show_vendor: section.settings.show_vendor,
+                        show_rating: section.settings.show_rating,
+                        lazy_load: lazy_load,
+                        skip_styles: skip_card_product_styles,
+                        quick_add: section.settings.quick_add,
+                        section_id: section.id,
+                        product_view_context: 'collection'
+                      %}
+                    </li>
+                    {%- assign skip_card_product_styles = true -%}
+                  {%- endfor -%}
+                {%- endif -%}
               </ul>
 
               {%- if paginate.pages > 1 -%}
