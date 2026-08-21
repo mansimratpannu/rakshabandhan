@@ -37,7 +37,7 @@
           # Theme-side fallback logic for count and images if Shopify Admin collections are empty
           if count == 0 or collection == nil
             if title contains 'Classic'
-              assign count = 8
+              assign count = 7
               if image == blank
                 assign image_asset_name = 'img_4901.jpg'
               endif
@@ -47,7 +47,7 @@
                 assign image_asset_name = 'img_4902.jpg'
               endif
             elsif title contains 'Kids'
-              assign count = 4
+              assign count = 5
               if image == blank
                 assign image_asset_name = 'img_4905.jpg'
               endif
