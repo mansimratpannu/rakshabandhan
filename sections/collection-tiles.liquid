@@ -27,8 +27,8 @@
           if link == blank or link == '/collections/all' or count == 0 or collection == nil
             if title contains 'Classic'
               assign link = '/collections/all/thread'
-            elsif title contains 'Bhaiya' or title contains 'Lumba'
-              assign link = '/collections/all/lumba'
+            elsif title contains 'Fancy' or title contains 'Lumba'
+              assign link = '/collections/all/fancy'
             elsif title contains 'Kids'
               assign link = '/collections/all/kids'
             endif
@@ -37,17 +37,17 @@
           # Theme-side fallback logic for count and images if Shopify Admin collections are empty
           if count == 0 or collection == nil
             if title contains 'Classic'
-              assign count = 7
+              assign count = 6
               if image == blank
                 assign image_asset_name = 'img_4901.jpg'
               endif
-            elsif title contains 'Bhaiya' or title contains 'Lumba'
+            elsif title contains 'Fancy' or title contains 'Lumba'
               assign count = 4
               if image == blank
                 assign image_asset_name = 'img_4902.jpg'
               endif
             elsif title contains 'Kids'
-              assign count = 5
+              assign count = 6
               if image == blank
                 assign image_asset_name = 'img_4905.jpg'
               endif
