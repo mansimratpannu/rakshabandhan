@@ -132,7 +132,7 @@
             assign is_empty_override = false
             assign col_handle = collection.handle
             if collection.all_products_count == 0 or collection == nil
-              if col_handle == 'classic-rakhis' or col_handle == 'fancy-rakhis' or col_handle == 'fancy' or col_handle == 'kids-rakhis'
+              if col_handle == 'classic-rakhis' or col_handle == 'fancy-rakhis' or col_handle == 'fancy' or col_handle == 'kids-rakhis' or col_handle == 'childrens-rakhis' or col_handle == 'children-rakhis'
                 assign is_empty_override = true
               endif
             endif
@@ -176,8 +176,10 @@
                         if product.tags contains 'Fancy'
                           assign is_match = true
                         endif
-                      elsif col_handle == 'kids-rakhis' and product.tags contains 'Kids'
-                        assign is_match = true
+                      elsif col_handle == 'kids-rakhis' or col_handle == 'childrens-rakhis' or col_handle == 'children-rakhis'
+                        if product.tags contains 'Kids'
+                          assign is_match = true
+                        endif
                       endif
                     -%}
                     {%- if is_match -%}

@@ -29,7 +29,7 @@
               assign link = '/collections/all/thread'
             elsif title contains 'Fancy' or title contains 'Lumba'
               assign link = '/collections/all/fancy'
-            elsif title contains 'Kids'
+            elsif title contains 'Kids' or title contains 'Children'
               assign link = '/collections/all/kids'
             endif
           endif
@@ -46,7 +46,7 @@
               if image == blank
                 assign image_asset_name = 'img_4902.jpg'
               endif
-            elsif title contains 'Kids'
+            elsif title contains 'Kids' or title contains 'Children'
               assign count = 6
               if image == blank
                 assign image_asset_name = 'img_4905.jpg'
