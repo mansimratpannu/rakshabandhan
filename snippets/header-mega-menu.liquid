@@ -36,9 +36,15 @@
                 >
                   {%- for childlink in link.links -%}
                     <li>
+                      {%- liquid
+                        assign child_url = childlink.url
+                        if child_url == '/collections/all-products'
+                          assign child_url = '/collections/all'
+                        endif
+                      -%}
                       <a
                         id="HeaderMenu-{{ link.handle }}-{{ childlink.handle }}"
-                        href="{{ childlink.url }}"
+                        href="{{ child_url }}"
                         class="mega-menu__link mega-menu__link--level-2 link{% if childlink.current %} mega-menu__link--active{% endif %}"
                         {% if childlink.current %}
                           aria-current="page"
@@ -50,11 +56,18 @@
                         <ul class="list-unstyled" role="list">
                           {%- for grandchildlink in childlink.links -%}
                             <li>
+                              {%- liquid
+                                assign grandchild_url = grandchildlink.url
+                                if grandchild_url == '/collections/all-products'
+                                  assign grandchild_url = '/collections/all'
+                                endif
+                              -%}
                               <a
                                 id="HeaderMenu-{{ link.handle }}-{{ childlink.handle }}-{{ grandchildlink.handle }}"
-                                href="{{ grandchildlink.url }}"
+                                href="{{ grandchild_url }}"
                                 class="mega-menu__link link{% if grandchildlink.current %} mega-menu__link--active{% endif %}"
                                 {% if grandchildlink.current %}
+                                  aria-current="page"
                                   aria-current="page"
                                 {% endif %}
                               >
@@ -71,9 +84,15 @@
             </details>
           </header-menu>
         {%- else -%}
+          {%- liquid
+            assign link_url = link.url
+            if link_url == '/collections/all-products'
+              assign link_url = '/collections/all'
+            endif
+          -%}
           <a
             id="HeaderMenu-{{ link.handle }}"
-            href="{{ link.url }}"
+            href="{{ link_url }}"
             class="header__menu-item list-menu__item link link--text focus-inset"
             {% if link.current %}
               aria-current="page"

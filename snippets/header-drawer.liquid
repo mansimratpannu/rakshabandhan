@@ -57,9 +57,15 @@
                             {%- for childlink in link.links -%}
                               <li>
                                 {%- if childlink.links == blank -%}
+                                  {%- liquid
+                                    assign child_url = childlink.url
+                                    if child_url == '/collections/all-products'
+                                      assign child_url = '/collections/all'
+                                    endif
+                                  -%}
                                   <a
                                     id="HeaderDrawer-{{ link.handle }}-{{ childlink.handle }}"
-                                    href="{{ childlink.url }}"
+                                    href="{{ child_url }}"
                                     class="menu-drawer__menu-item link link--text list-menu__item focus-inset{% if childlink.current %} menu-drawer__menu-item--active{% endif %}"
                                     {% if childlink.current %}
                                       aria-current="page"
@@ -101,9 +107,15 @@
                                       >
                                         {%- for grandchildlink in childlink.links -%}
                                           <li>
+                                            {%- liquid
+                                              assign grandchild_url = grandchildlink.url
+                                              if grandchild_url == '/collections/all-products'
+                                                assign grandchild_url = '/collections/all'
+                                              endif
+                                            -%}
                                             <a
                                               id="HeaderDrawer-{{ link.handle }}-{{ childlink.handle }}-{{ grandchildlink.handle }}"
-                                              href="{{ grandchildlink.url }}"
+                                              href="{{ grandchild_url }}"
                                               class="menu-drawer__menu-item link link--text list-menu__item focus-inset{% if grandchildlink.current %} menu-drawer__menu-item--active{% endif %}"
                                               {% if grandchildlink.current %}
                                                 aria-current="page"
@@ -124,9 +136,15 @@
                       </div>
                     </details>
                   {%- else -%}
+                    {%- liquid
+                      assign link_url = link.url
+                      if link_url == '/collections/all-products'
+                        assign link_url = '/collections/all'
+                      endif
+                    -%}
                     <a
                       id="HeaderDrawer-{{ link.handle }}"
-                      href="{{ link.url }}"
+                      href="{{ link_url }}"
                       class="menu-drawer__menu-item list-menu__item link link--text focus-inset{% if link.current %} menu-drawer__menu-item--active{% endif %}"
                       {% if link.current %}
                         aria-current="page"
