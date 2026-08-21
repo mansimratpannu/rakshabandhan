@@ -2,8 +2,19 @@
 <html class="js" lang="{{ request.locale.iso_code }}">
   <head>
     <script>
-      if (window.location.pathname.endsWith('/collections/all-products')) {
+      const path = window.location.pathname;
+      if (path.endsWith('/collections/all-products')) {
         window.location.replace('/collections/all');
+      } else if (path.includes('/collections/classic-rakhis')) {
+        window.location.replace('/collections/all/thread');
+      } else if (path.includes('/collections/bhaiya-bhabhi-lumba')) {
+        window.location.replace('/collections/all/lumba');
+      } else if (path.includes('/collections/kids-rakhis')) {
+        window.location.replace('/collections/all/kids');
+      } else if (path.includes('/collections/pooja-thalis')) {
+        window.location.replace('/collections/all/thali');
+      } else if (path.includes('/collections/gourmet-hampers')) {
+        window.location.replace('/collections/all/hamper');
       }
     </script>
     <meta charset="utf-8">
