@@ -19,39 +19,49 @@
           assign collection = block.settings.collection
           assign title = block.settings.title | default: collection.title
           assign image = block.settings.image | default: collection.featured_image | default: collection.products.first.featured_image
-          assign link = block.settings.link | default: collection.url
           assign count = collection.products_count | default: 0
           assign image_asset_name = blank
+          
+          # Force the link to use our tag-based filter to prevent 404s on uncreated collections
+          assign link = block.settings.link
+          if link == blank or link == '/collections/all' or count == 0 or collection == nil
+            if title contains 'Classic'
+              assign link = '/collections/all/thread'
+            elsif title contains 'Bhaiya' or title contains 'Lumba'
+              assign link = '/collections/all/lumba'
+            elsif title contains 'Kids'
+              assign link = '/collections/all/kids'
+            elsif title contains 'Pooja' or title contains 'Thali'
+              assign link = '/collections/all/thali'
+            elsif title contains 'Hamper' or title contains 'Gourmet'
+              assign link = '/collections/all/hamper'
+            endif
+          endif
 
-          # Theme-side fallback logic if Shopify Admin collections are empty/not set up
+          # Theme-side fallback logic for count and images if Shopify Admin collections are empty
           if count == 0 or collection == nil
             if title contains 'Classic'
               assign count = 6
-              assign link = '/collections/classic-rakhis'
               if image == blank
                 assign image_asset_name = 'img_4901.jpg'
               endif
             elsif title contains 'Bhaiya' or title contains 'Lumba'
               assign count = 4
-              assign link = '/collections/bhaiya-bhabhi-lumba'
               if image == blank
                 assign image_asset_name = 'img_4902.jpg'
               endif
             elsif title contains 'Kids'
               assign count = 3
-              assign link = '/collections/kids-rakhis'
               if image == blank
                 assign image_asset_name = 'img_4905.jpg'
               endif
             elsif title contains 'Pooja' or title contains 'Thali'
               assign count = 3
-              assign link = '/collections/pooja-thalis'
               if image == blank
                 assign image_asset_name = 'img_4911.jpg'
               endif
             elsif title contains 'Hamper' or title contains 'Gourmet'
               assign count = 4
-              assign link = '/collections/gourmet-hampers'
               if image == blank
                 assign image_asset_name = 'img_4884.png'
               endif
