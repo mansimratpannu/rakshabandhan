@@ -21,12 +21,57 @@
           assign image = block.settings.image | default: collection.featured_image | default: collection.products.first.featured_image
           assign link = block.settings.link | default: collection.url
           assign count = collection.products_count | default: 0
+          assign image_asset_name = blank
+
+          # Theme-side fallback logic if Shopify Admin collections are empty/not set up
+          if count == 0 or collection == nil
+            if title contains 'Classic'
+              assign count = 6
+              assign link = '/collections/all?filter.p.product_type=Classic+Rakhi&filter.p.product_type=Premium+Rakhi'
+              if image == blank
+                assign image_asset_name = 'img_4901.jpg'
+              endif
+            elsif title contains 'Bhaiya' or title contains 'Lumba'
+              assign count = 4
+              assign link = '/collections/all?filter.p.product_type=Lumba&filter.p.product_type=Bhaiya-Bhabhi+Set'
+              if image == blank
+                assign image_asset_name = 'img_4902.jpg'
+              endif
+            elsif title contains 'Kids'
+              assign count = 3
+              assign link = '/collections/all?filter.p.product_type=Kids+Rakhi'
+              if image == blank
+                assign image_asset_name = 'img_4905.jpg'
+              endif
+            elsif title contains 'Pooja' or title contains 'Thali'
+              assign count = 3
+              assign link = '/collections/all?filter.p.product_type=Pooja+Thali'
+              if image == blank
+                assign image_asset_name = 'img_4911.jpg'
+              endif
+            elsif title contains 'Hamper' or title contains 'Gourmet'
+              assign count = 4
+              assign link = '/collections/all?filter.p.product_type=Hampers'
+              if image == blank
+                assign image_asset_name = 'img_4884.png'
+              endif
+            endif
+          endif
         -%}
         <a href="{{ link | default: '#' }}" class="collection-tile-card card-wrapper" {{ block.shopify_attributes }}>
           <div class="collection-tile-image-wrapper">
             {%- if image != blank -%}
               <img 
                 src="{{ image | image_url: width: 350 }}" 
+                alt="{{ title | escape }}"
+                class="collection-tile-image"
+                loading="lazy"
+                width="150"
+                height="150"
+              >
+            {%- elsif image_asset_name != blank -%}
+              <img 
+                src="{{ image_asset_name | asset_url }}" 
                 alt="{{ title | escape }}"
                 class="collection-tile-image"
                 loading="lazy"
