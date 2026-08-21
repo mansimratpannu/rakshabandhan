@@ -1,8 +1,18 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "festive_hero": {
       "type": "festive-hero",
       "settings": {
+        "color_scheme": "",
         "eyebrow": "CELEBRATE SACRED BONDS",
         "headline": "Handcrafted Threads of Love & Protection",
         "body_copy": "<p>Gift your sibling an artisanal Rakhi crafted by rural weavers, wrapped in traditional roli-chawal and packed in luxurious festive boxes.</p>",
@@ -18,21 +28,17 @@
     "thread_divider_1": {
       "type": "thread-divider",
       "settings": {
-        "color_red": "#A3182B",
-        "color_gold": "#C9A227"
+        "color_red": "#a3182b",
+        "color_gold": "#c9a227"
       }
     },
     "collection_tiles": {
       "type": "collection-tiles",
-      "settings": {
-        "heading": "Curated Rakhi Collections",
-        "subtext": "Find the perfect token of protection for your siblings",
-        "heading_alignment": "center"
-      },
       "blocks": {
         "tile_1": {
           "type": "tile",
           "settings": {
+            "collection": "classic-rakhis",
             "title": "Classic Rakhis",
             "link": "shopify://collections/all"
           }
@@ -40,6 +46,7 @@
         "tile_2": {
           "type": "tile",
           "settings": {
+            "collection": "fancy-rakhis",
             "title": "Fancy Rakhis",
             "link": "shopify://collections/all"
           }
@@ -47,6 +54,7 @@
         "tile_3": {
           "type": "tile",
           "settings": {
+            "collection": "kids-rakhis",
             "title": "Children's Rakhis",
             "link": "shopify://collections/all"
           }
@@ -54,6 +62,7 @@
         "tile_4": {
           "type": "tile",
           "settings": {
+            "collection": "beaded-rakhis",
             "title": "Beaded Rakhis",
             "link": "shopify://collections/all"
           }
@@ -64,18 +73,25 @@
         "tile_2",
         "tile_3",
         "tile_4"
-      ]
+      ],
+      "settings": {
+        "color_scheme": "",
+        "heading": "Curated Rakhi Collections",
+        "subtext": "Find the perfect token of protection for your siblings",
+        "heading_alignment": "center"
+      }
     },
     "thread_divider_2": {
       "type": "thread-divider",
       "settings": {
-        "color_red": "#A3182B",
-        "color_gold": "#C9A227"
+        "color_red": "#a3182b",
+        "color_gold": "#c9a227"
       }
     },
     "featured_products": {
       "type": "featured-products",
       "settings": {
+        "color_scheme": "",
         "heading": "Our Handcrafted Bestsellers",
         "subtext": "Explore premium products selected for the festive season",
         "collection": "all",
@@ -84,13 +100,6 @@
     },
     "hamper_builder_band": {
       "type": "hamper-builder-band",
-      "settings": {
-        "eyebrow": "BESPOKE FESTIVE CURATIONS",
-        "headline": "Build Your Own Rakhi Gift Hamper",
-        "description": "<p>Make this Raksha Bandhan extra special. Build a custom hamper filled with gourmet sweets, healthy nuts, dry fruits, puja thali, and premium artisanal thread rakhis.</p>",
-        "cta_text": "Start Customizing",
-        "cta_link": "shopify://collections/all"
-      },
       "blocks": {
         "step_1": {
           "type": "step",
@@ -126,7 +135,15 @@
         "step_2",
         "step_3",
         "step_4"
-      ]
+      ],
+      "settings": {
+        "color_scheme": "",
+        "eyebrow": "BESPOKE FESTIVE CURATIONS",
+        "headline": "Build Your Own Rakhi Gift Hamper",
+        "description": "<p>Make this Raksha Bandhan extra special. Build a custom hamper filled with gourmet sweets, healthy nuts, dry fruits, puja thali, and premium artisanal thread rakhis.</p>",
+        "cta_text": "Start Customizing",
+        "cta_link": "shopify://collections/all"
+      }
     },
     "trust_strip": {
       "type": "trust-strip",
@@ -134,7 +151,7 @@
         "cell_1": {
           "type": "trust_cell",
           "settings": {
-            "icon": "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='12' r='10'></circle><line x1='2' y1='12' x2='22' y2='12'></line><path d='M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z'></path></svg>",
+            "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewbox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"12\" cy=\"12\" r=\"10\"></circle><line x1=\"2\" y1=\"12\" x2=\"22\" y2=\"12\"></line><path d=\"M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z\"></path></svg>",
             "heading": "Worldwide Shipping",
             "text": "Send protection globally to USA, UK, Canada & India."
           }
@@ -142,7 +159,7 @@
         "cell_2": {
           "type": "trust_cell",
           "settings": {
-            "icon": "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><rect x='3' y='11' width='18' height='11' rx='2' ry='2'></rect><path d='M7 11V7a5 5 0 0 1 10 0v4'></path></svg>",
+            "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewbox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"3\" y=\"11\" width=\"18\" height=\"11\" rx=\"2\" ry=\"2\"></rect><path d=\"M7 11V7a5 5 0 0 1 10 0v4\"></path></svg>",
             "heading": "Secure Checkout",
             "text": "100% secure payment options with Razorpay & Cards."
           }
@@ -150,7 +167,7 @@
         "cell_3": {
           "type": "trust_cell",
           "settings": {
-            "icon": "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><path d='M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z'></path></svg>",
+            "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewbox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z\"></path></svg>",
             "heading": "Artisanal & Pure",
             "text": "Handcrafted by local weavers. Authentic Roli-Chawal."
           }
@@ -158,7 +175,7 @@
         "cell_4": {
           "type": "trust_cell",
           "settings": {
-            "icon": "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><path d='M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z'></path></svg>",
+            "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewbox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z\"></path></svg>",
             "heading": "Dedicated Support",
             "text": "Assisting siblings globally via WhatsApp & email support."
           }
@@ -169,7 +186,10 @@
         "cell_2",
         "cell_3",
         "cell_4"
-      ]
+      ],
+      "settings": {
+        "color_scheme": ""
+      }
     }
   },
   "order": [
