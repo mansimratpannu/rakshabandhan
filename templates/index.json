@@ -50,28 +50,12 @@
             "title": "Kids Rakhis",
             "link": "shopify://collections/all"
           }
-        },
-        "tile_4": {
-          "type": "tile",
-          "settings": {
-            "title": "Pooja Thalis",
-            "link": "shopify://collections/all"
-          }
-        },
-        "tile_5": {
-          "type": "tile",
-          "settings": {
-            "title": "Gourmet Hampers",
-            "link": "shopify://collections/all"
-          }
         }
       },
       "block_order": [
         "tile_1",
         "tile_2",
-        "tile_3",
-        "tile_4",
-        "tile_5"
+        "tile_3"
       ]
     },
     "thread_divider_2": {

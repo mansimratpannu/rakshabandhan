@@ -31,17 +31,13 @@
               assign link = '/collections/all/lumba'
             elsif title contains 'Kids'
               assign link = '/collections/all/kids'
-            elsif title contains 'Pooja' or title contains 'Thali'
-              assign link = '/collections/all/thali'
-            elsif title contains 'Hamper' or title contains 'Gourmet'
-              assign link = '/collections/all/hamper'
             endif
           endif
 
           # Theme-side fallback logic for count and images if Shopify Admin collections are empty
           if count == 0 or collection == nil
             if title contains 'Classic'
-              assign count = 6
+              assign count = 8
               if image == blank
                 assign image_asset_name = 'img_4901.jpg'
               endif
@@ -51,19 +47,9 @@
                 assign image_asset_name = 'img_4902.jpg'
               endif
             elsif title contains 'Kids'
-              assign count = 3
-              if image == blank
-                assign image_asset_name = 'img_4905.jpg'
-              endif
-            elsif title contains 'Pooja' or title contains 'Thali'
-              assign count = 3
-              if image == blank
-                assign image_asset_name = 'img_4911.jpg'
-              endif
-            elsif title contains 'Hamper' or title contains 'Gourmet'
               assign count = 4
               if image == blank
-                assign image_asset_name = 'img_4884.png'
+                assign image_asset_name = 'img_4905.jpg'
               endif
             endif
           endif
@@ -134,7 +120,9 @@
   }
   @media screen and (min-width: 768px) {
     .collection-tiles-grid {
-      grid-template-columns: repeat(5, 1fr);
+      grid-template-columns: repeat({{ section.blocks.size | default: 5 }}, 1fr);
+      max-width: {% if section.blocks.size == 3 %}900px{% else %}1200px{% endif %};
+      margin: 0 auto;
       gap: 2rem;
     }
   }
