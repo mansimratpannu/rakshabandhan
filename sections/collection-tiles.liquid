@@ -22,15 +22,15 @@
           assign count = collection.products_count | default: 0
           assign image_asset_name = blank
           
-          # Force the link to use our tag-based filter to prevent 404s on uncreated collections
+          # Force the link to use our collection handles
           assign link = block.settings.link
           if link == blank or link == '/collections/all' or count == 0 or collection == nil
             if title contains 'Classic'
-              assign link = '/collections/all/thread'
+              assign link = '/collections/classic-rakhis'
             elsif title contains 'Fancy' or title contains 'Lumba'
-              assign link = '/collections/all/fancy'
+              assign link = '/collections/fancy-rakhis'
             elsif title contains 'Kids' or title contains 'Children'
-              assign link = '/collections/all/kids'
+              assign link = '/collections/kids-rakhis'
             endif
           endif
 

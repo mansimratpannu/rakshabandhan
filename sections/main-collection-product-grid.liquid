@@ -147,15 +147,17 @@
               endif
             endfor
 
-            if col_handle == 'classic-rakhis' or has_thread_tag
-              assign is_empty_override = true
-              assign target_category = 'classic'
-            elsif col_handle == 'fancy-rakhis' or col_handle == 'fancy' or has_fancy_tag
-              assign is_empty_override = true
-              assign target_category = 'fancy'
-            elsif col_handle == 'kids-rakhis' or col_handle == 'childrens-rakhis' or col_handle == 'children-rakhis' or has_kids_tag
-              assign is_empty_override = true
-              assign target_category = 'kids'
+            if collection.products_count == 0 or collection == nil
+              if col_handle == 'classic-rakhis' or has_thread_tag
+                assign is_empty_override = true
+                assign target_category = 'classic'
+              elsif col_handle == 'fancy-rakhis' or col_handle == 'fancy' or has_fancy_tag
+                assign is_empty_override = true
+                assign target_category = 'fancy'
+              elsif col_handle == 'kids-rakhis' or col_handle == 'childrens-rakhis' or col_handle == 'children-rakhis' or has_kids_tag
+                assign is_empty_override = true
+                assign target_category = 'kids'
+              endif
             endif
           -%}
           {%- if collection.products.size == 0 and is_empty_override == false -%}
