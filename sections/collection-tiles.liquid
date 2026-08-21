@@ -31,6 +31,8 @@
               assign link = '/collections/fancy-rakhis'
             elsif title contains 'Kids' or title contains 'Children'
               assign link = '/collections/kids-rakhis'
+            elsif title contains 'Beaded'
+              assign link = '/collections/beaded-rakhis'
             endif
           endif
 
@@ -50,6 +52,11 @@
               assign count = 6
               if image == blank
                 assign image_asset_name = 'img_4905.jpg'
+              endif
+            elsif title contains 'Beaded'
+              assign count = 5
+              if image == blank
+                assign image_asset_name = 'img_4914.jpg'
               endif
             endif
           endif

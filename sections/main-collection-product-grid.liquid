@@ -136,6 +136,7 @@
             assign has_thread_tag = false
             assign has_fancy_tag = false
             assign has_kids_tag = false
+            assign has_beaded_tag = false
             for tag in current_tags
               assign downcase_tag = tag | downcase
               if downcase_tag == 'thread'
@@ -144,6 +145,8 @@
                 assign has_fancy_tag = true
               elsif downcase_tag == 'kids' or downcase_tag == 'children'
                 assign has_kids_tag = true
+              elsif downcase_tag == 'beaded'
+                assign has_beaded_tag = true
               endif
             endfor
 
@@ -157,6 +160,9 @@
               elsif col_handle == 'kids-rakhis' or col_handle == 'childrens-rakhis' or col_handle == 'children-rakhis' or has_kids_tag
                 assign is_empty_override = true
                 assign target_category = 'kids'
+              elsif col_handle == 'beaded-rakhis' or col_handle == 'beaded' or has_beaded_tag
+                assign is_empty_override = true
+                assign target_category = 'beaded'
               endif
             endif
           -%}
@@ -217,6 +223,10 @@
                         endif
                       elsif target_category == 'kids'
                         if product.tags contains 'Kids' or is_kids_handle == true
+                          assign is_match = true
+                        endif
+                      elsif target_category == 'beaded'
+                        if product.tags contains 'Beaded' or handle_to_check contains 'beaded'
                           assign is_match = true
                         endif
                       endif
