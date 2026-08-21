@@ -27,31 +27,31 @@
           if count == 0 or collection == nil
             if title contains 'Classic'
               assign count = 6
-              assign link = '/collections/all?filter.p.product_type=Classic+Rakhi&filter.p.product_type=Premium+Rakhi'
+              assign link = '/collections/all/thread'
               if image == blank
                 assign image_asset_name = 'img_4901.jpg'
               endif
             elsif title contains 'Bhaiya' or title contains 'Lumba'
               assign count = 4
-              assign link = '/collections/all?filter.p.product_type=Lumba&filter.p.product_type=Bhaiya-Bhabhi+Set'
+              assign link = '/collections/all/lumba'
               if image == blank
                 assign image_asset_name = 'img_4902.jpg'
               endif
             elsif title contains 'Kids'
               assign count = 3
-              assign link = '/collections/all?filter.p.product_type=Kids+Rakhi'
+              assign link = '/collections/all/kids'
               if image == blank
                 assign image_asset_name = 'img_4905.jpg'
               endif
             elsif title contains 'Pooja' or title contains 'Thali'
               assign count = 3
-              assign link = '/collections/all?filter.p.product_type=Pooja+Thali'
+              assign link = '/collections/all/thali'
               if image == blank
                 assign image_asset_name = 'img_4911.jpg'
               endif
             elsif title contains 'Hamper' or title contains 'Gourmet'
               assign count = 4
-              assign link = '/collections/all?filter.p.product_type=Hampers'
+              assign link = '/collections/all/hamper'
               if image == blank
                 assign image_asset_name = 'img_4884.png'
               endif
