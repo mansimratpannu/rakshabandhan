@@ -18,9 +18,23 @@
   <h1 class="main-page-title page-title h0{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
     {{ page.title | escape }}
   </h1>
-  <div class="rte{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
-    {{ page.content }}
-  </div>
+    {%- if page.handle == 'our-story' and page.content == blank -%}
+      <div class="our-story-custom-content" style="line-height: 1.8; color: #12332C;">
+        <h2 style="font-family: var(--font-heading-family); color: #A3182B; margin-top: 0; font-size: 2.4rem;">The Thread of Love & Legacy</h2>
+        <p>At <strong>Naksh</strong>, we believe that Raksha Bandhan is more than just a tradition—it is a celebration of the beautiful, unbreakable bond between siblings. It is a tribute to the childhood mischief, the shared secrets, the lifelong support, and the silent promises of protection and love.</p>
+        
+        <h3 style="font-family: var(--font-heading-family); color: #C9A227; margin-top: 2rem; font-size: 2rem;">Our Craftsmanship</h3>
+        <p>Every single Rakhi in our collection is curated with the utmost love and attention to detail. We work closely with traditional Indian artisans who have spent generations mastering their crafts. From hand-braided vibrant cotton threads (Mauli) to intricate beadwork, zardosi embroidery, and premium gold-plated centers, each piece is a work of art designed to be worn proudly.</p>
+        
+        <h3 style="font-family: var(--font-heading-family); color: #C9A227; margin-top: 2rem; font-size: 2rem;">Our Promise</h3>
+        <p>We know that siblings often find themselves separated by distances but united by heart. That is why we package our Rakhis in premium gift boxes with complimentary traditional Roli-Chawal packets and custom handwritten gift messages, delivering love straight to your sibling's doorstep.</p>
+        <p>Whether you are tying a thread of remembrance across oceans or celebrating together in person, <strong>Naksh</strong> is honored to be a small part of your family's festive memories.</p>
+        
+        <p style="font-style: italic; margin-top: 2.5rem; font-weight: bold; color: #A3182B;">Auspicious threads, handcrafted for the bonds that define us.</p>
+      </div>
+    {%- else -%}
+      {{ page.content }}
+    {%- endif -%}
 </div>
 
 {% schema %}
